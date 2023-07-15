@@ -1,0 +1,22 @@
+.scanner_draw_row {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.scanner_draw_row_field {    
+    background-color: aliceblue;
+    margin-right: 55px;
+    padding: 5px 15px;
+}
+
+.scanner_draw_row_selected {
+    display: flex;
+    font-family: cursive;
+}
+
+.scanner_draw_row_selected_num {
+    padding: 5px 10px;
+    background-color: antiquewhite;
+    border-radius: 15px;
+    margin-left: 10px;
+}

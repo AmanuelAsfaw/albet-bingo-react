@@ -1,0 +1,50 @@
+import { Card, Tabs } from "antd";
+import { FC, useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { fetchAllProjects } from "../../redux/Project/Project.action";
+import IncomingLetterComponent from "./IncomingLetter";
+import OutgoingLetterComponent from "./OutgoingLetter";
+
+const LetterComponent: FC<{fetchProjects: Function}> = ({fetchProjects}) => {
+  const [tab, setTab] = useState("1");
+
+  const onChangeTab = (event: any) => {
+    setTab(event);
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, [])
+
+  return (
+    <Card className="plan_tab">
+      <Tabs tabPosition="top" activeKey={tab} onChange={onChangeTab}>
+        <Tabs.TabPane tab="Incoming" key="1">
+          <IncomingLetterComponent tab={tab} />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Outgoing" key="2">
+          <OutgoingLetterComponent tab={tab} />
+        </Tabs.TabPane>
+      </Tabs>
+    </Card>
+  );
+};
+
+/**
+ * Map State to Props
+ *
+ * @param state
+ */
+const mapStateToProps = (state: any) => ({});
+
+/**
+ * Map Dispatch to Props
+ *
+ * @param dispatch
+ */
+const mapDispatchToProps = (dispatch: any) => ({
+  fetchProjects: (action: any) => dispatch(fetchAllProjects(action))
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LetterComponent);

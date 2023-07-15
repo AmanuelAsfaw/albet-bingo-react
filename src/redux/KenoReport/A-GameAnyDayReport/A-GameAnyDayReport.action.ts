@@ -1,0 +1,31 @@
+import { KenoAnyDayByGameReportSummaryActionTypes } from "./A-GameAnyDayReport.type";
+
+/**
+ * Fetch All Data
+ *
+ * @param payload
+ */
+export const fetchAllData = (payload?: any) => ({
+  type: KenoAnyDayByGameReportSummaryActionTypes.FETCH_ALL_KENO_ANY_DAY_BY_GAME_REPORT_SUMMARY,
+  payload: payload,
+});
+
+/**
+ * Fetch All Data
+ *
+ * @param payload
+ */
+export const fetchOneData = (payload?: any) => ({
+  type: KenoAnyDayByGameReportSummaryActionTypes.FETCH_ONE_KENO_ANY_DAY_BY_GAME_REPORT_SUMMARY,
+  payload: payload,
+});
+
+/**
+ * Reset Fetch Data State
+ *
+ * @param payload
+ */
+export const fetchAllDataReset = (payload?: any) => ({
+  type: KenoAnyDayByGameReportSummaryActionTypes.FETCH_ALL_KENO_ANY_DAY_BY_GAME_REPORT_SUMMARY_RESET,
+  payload: payload,
+});

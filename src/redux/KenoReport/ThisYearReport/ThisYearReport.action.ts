@@ -1,0 +1,31 @@
+import { KenoThisYearReportSummaryActionTypes } from "./ThisYearReport.type";
+
+/**
+ * Fetch All Data
+ *
+ * @param payload
+ */
+export const fetchAllData = (payload?: any) => ({
+  type: KenoThisYearReportSummaryActionTypes.FETCH_ALL_KENO_THIS_YEAR_REPORT_SUMMARY,
+  payload: payload,
+});
+
+/**
+ * Fetch All Data
+ *
+ * @param payload
+ */
+export const fetchOneData = (payload?: any) => ({
+  type: KenoThisYearReportSummaryActionTypes.FETCH_ONE_KENO_THIS_YEAR_REPORT_SUMMARY,
+  payload: payload,
+});
+
+/**
+ * Reset Fetch Data State
+ *
+ * @param payload
+ */
+export const fetchAllDataReset = (payload?: any) => ({
+  type: KenoThisYearReportSummaryActionTypes.FETCH_ALL_KENO_THIS_YEAR_REPORT_SUMMARY_RESET,
+  payload: payload,
+});

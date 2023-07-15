@@ -1,0 +1,363 @@
+import {
+  FC,
+  ReactChild,
+  ReactFragment,
+  ReactPortal,
+  useEffect,
+  useState,
+} from "react";
+import { connect } from "react-redux";
+import { Message, NotificationType } from "../../constants/Constants";
+import { fetchAllUser } from "../../redux/User/User.action";
+import { fetchAllProjects } from "../../redux/Project/Project.action";
+import { ErrorHandler } from "../../utilities/utilities";
+import { OpenNotification } from "../common/Notification/Notification.component";
+import {
+  BoardProjectPropType,
+  BoardPropType,
+  InitialColumns,
+  StatusBoardPropType,
+  UpdateBoard,
+  DeleteData,
+} from "./util/ProjectCard.util";
+import Table, { ColumnsType } from "antd/lib/table";
+import { Button, Popconfirm, Popover } from "antd";
+import { DeleteOutlined, MoreOutlined } from "@ant-design/icons";
+import { fetchOneProjects } from "../../redux/Project/Project.action";
+import { isEmpty } from "lodash";
+
+import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { fetchAllRole } from "../../redux/Role/Role.action";
+import TaskCard from "./components/ProjectCard";
+import styled from "@emotion/styled";
+import AddStatusBoardComponent from "./components/AddStatusBoard";
+import AddProjectBoardComponent from "./components/AddProjectBoard";
+import { fetchAllStatusBoard } from "../../redux/StatusBoard/StatusBoard/StatusBoard.action";
+import { BoardProject } from "../../redux/StatusBoard/BoardProject/BoardProject.type";
+
+const StatusBoardComponent: FC<StatusBoardPropType> = ({
+  projects,
+  status_board,
+  fetchUser,
+  fetchProjects,
+  fetchStatusBoards,
+  fetchOneProject,
+  fetchRoles,
+}) => {
+  const [assignData, setAssignData] = useState<any>([]);
+  const [columns, setColumns] = useState<BoardPropType>(InitialColumns);
+  const [boardOnchange, setBoardOnchange] = useState<number>(0);
+  const [allBoardProjects, setAllBoardProjects] = useState<number[]>([]);
+
+  useEffect(() => {
+    console.log("fetchStatusBoards");
+
+    fetchStatusBoards();
+  }, [fetchStatusBoards]);
+
+  useEffect(() => {
+    console.log("useEffect status_boards");
+
+    if (status_board.payload.length) {
+      let columns_list: BoardPropType = {};
+      let project_list: number[] = [];
+
+      if (!status_board.payload.find((x) => x.title == "Projects")) {
+        columns_list["Projects"] = {
+          id: 0,
+          title: "Projects",
+          items: [],
+          priority: 0,
+        };
+      }
+
+      status_board.payload
+        .sort((a, b) =>
+          a.priority < b.priority ? 1 : a.priority === b.priority ? 0 : -1
+        )
+        .forEach((element) => {
+          columns_list[element.title] = {
+            id: element.id,
+            title: element.title,
+            priority: element.priority,
+            items: element.projects,
+          };
+
+          element.projects.forEach((ele) => {
+            project_list.push(ele.project_id);
+          });
+        });
+      setColumns(columns_list);
+      setAllBoardProjects(project_list);
+      console.log("project_list");
+      console.log(project_list);
+    }
+  }, [status_board]);
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
+
+  useEffect(() => {
+    if (boardOnchange) {
+      console.log(columns);
+      let changed_board: BoardProject[] = [];
+      Object.entries(columns).map(([columnId, column], index) => {
+        column.items.forEach((element) => {
+          changed_board.push({ ...element, board_id: column.id });
+        });
+      });
+      console.log(changed_board);
+
+      UpdateBoard({
+        status_board: changed_board,
+      })
+        .then(() => {
+          setTimeout(() => {
+            fetchStatusBoards();
+            OpenNotification(
+              NotificationType.SUCCESS,
+              Message.STATUS_BOARD_UPDATE_SUCCESS,
+              ""
+            );
+          }, 1000);
+        })
+        .catch((error: any) => {
+          ErrorHandler(error).map((e: any) =>
+            OpenNotification(
+              NotificationType.ERROR,
+              Message.STATUS_BOARD_REGISTERED_FAIL,
+              e.message
+            )
+          );
+        });
+    }
+  }, [boardOnchange]);
+
+  const OnDelete = (id: any) => {
+    let board_list = { ...columns };
+    if (columns.hasOwnProperty(id)) {
+      console.log(columns[id]);
+      delete board_list[id];
+    }
+    setColumns(board_list);
+
+    DeleteData(id)
+      .then(() => {
+        fetchStatusBoards();
+        OpenNotification(NotificationType.SUCCESS, "Board removed!", "");
+      })
+      .catch((error) => {
+        ErrorHandler(error).map((e: any) =>
+          OpenNotification(
+            NotificationType.ERROR,
+            "Failed to remove Board",
+            e.message
+          )
+        );
+      });
+  };
+
+  const onDragEnd = (
+    result: DropResult,
+    columns: { [x: string]: any },
+    setColumns: (arg0: any) => void
+  ) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[source.droppableId];
+      const destColumn = columns[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      });
+      setBoardOnchange(boardOnchange + 1);
+    } else {
+      const column = columns[source.droppableId];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems,
+        },
+      });
+    }
+  };
+
+  const Container = styled.div`
+    display: flex;
+    background-color: #84d4cb61;
+  `;
+
+  const TaskList = styled.div`
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    background: #f3f3f3;
+    min-width: 341px;
+    border-radius: 5px;
+    padding: 15px 15px;
+    margin-right: 45px;
+  `;
+
+  const TaskColumnStyles = styled.div`
+    margin: 8px;
+    display: flex;
+    width: 100%;
+    min-height: 80vh;
+  `;
+
+  const Title = styled.span`
+    color: #10957d;
+    background: rgba(16, 149, 125, 0.15);
+    padding: 2px 10px;
+    border-radius: 5px;
+    align-self: flex-start;
+  `;
+
+  const fetchAllConcept = async () => {};
+
+  const addBoardTracker = async (title: string) => {
+    const board = {
+      id: 0,
+      title: title,
+      items: [],
+      priority: 0,
+    };
+    let columns_copy: BoardPropType = { ...columns, [title]: board };
+    setColumns(columns_copy);
+  };
+
+  const renderPopOverContent = () => {
+    return (
+      <div className="d-flex flex-column">
+        <AddStatusBoardComponent />
+        <AddProjectBoardComponent
+          projects={projects.payload.filter(
+            (ele) => !allBoardProjects.includes(ele.id)
+          )}
+          fetchStatusBoardAll={fetchStatusBoards}
+        />
+      </div>
+    );
+  };
+
+  const getProjectNameByid = (item: any) => {
+    const project = projects.payload.find((x) => x.id == item.project_id)?.name;
+    return project ? project : "Unknown";
+  };
+
+  return (
+    <DragDropContext
+      onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+    >
+      <Container>
+        <TaskColumnStyles>
+          {Object.entries(columns).map(([columnId, column], index) => {
+            return (
+              <Droppable key={columnId} droppableId={columnId}>
+                {(provided, snapshot) => (
+                  <TaskList
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Title>{column.title}</Title>
+                      {column.title == "Projects" && (
+                        <Popover
+                          placement="top"
+                          overlayClassName="action-popover"
+                          trigger="focus"
+                          zIndex={2000}
+                          content={() => renderPopOverContent()}
+                        >
+                          <Button
+                            icon={<MoreOutlined />}
+                            className="btn-outline-secondary border-0"
+                          ></Button>
+                        </Popover>
+                      )}
+
+                      {column.title !== "Projects" && (
+                        <Popconfirm
+                          placement="leftTop"
+                          title="Are you sure you want to remove this Board?"
+                          onConfirm={() => OnDelete(column.id)}
+                          okText="Yes"
+                          cancelText="No"
+                        >
+                          <Button
+                            icon={<DeleteOutlined />}
+                            className="btn-outline-secondary border-0"
+                          ></Button>
+                        </Popconfirm>
+                      )}
+                    </div>
+
+                    {column.items.map((item, index) => (
+                      <TaskCard
+                        key={index.toString()}
+                        title={getProjectNameByid(item)}
+                        index={index}
+                        priority={item.priority}
+                        id={item.id}
+                        updatedAt={item.updatedAt}
+                      />
+                    ))}
+                  </TaskList>
+                )}
+              </Droppable>
+            );
+          })}
+        </TaskColumnStyles>
+      </Container>
+    </DragDropContext>
+  );
+};
+
+/**
+ * Map State to Props
+ *
+ * @param state
+ */
+const mapStateToProps = (state: any) => ({
+  projects: state.project.fetchAll,
+  status_board: state.status_board.fetchAll,
+});
+
+/**
+ * Map Dispatch to Props
+ *
+ * @param dispatch
+ */
+const mapDispatchToProps = (dispatch: any) => ({
+  fetchUser: (action: any) => dispatch(fetchAllUser(action)),
+  fetchProjects: (action: any) => dispatch(fetchAllProjects(action)),
+  fetchStatusBoards: (action: any) => dispatch(fetchAllStatusBoard(action)),
+  fetchOneProject: (action: any) => dispatch(fetchOneProjects(action)),
+  fetchRoles: (action: any) => dispatch(fetchAllRole(action)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(StatusBoardComponent);

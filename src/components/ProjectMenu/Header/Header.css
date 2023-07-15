@@ -1,0 +1,13 @@
+.header-value {
+  font-weight: 400;
+  font-size: 16px;
+}
+.header > svg {
+  width: 16px;
+  height: 16px;
+}
+.header-label {
+  vertical-align: middle;
+  font-weight: 300;
+  color: #929292;
+}
