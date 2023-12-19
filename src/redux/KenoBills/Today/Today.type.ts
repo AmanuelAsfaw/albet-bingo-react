@@ -12,10 +12,16 @@ export type TodayKenoBill= {
     is_paid: boolean;
     is_canceled: boolean;
     is_redeemed: boolean;
+    has_multiple: boolean;
     stake: number;
+    sub_bills:SubBill[];
     selected_numbers:number[];
 };
 
+export type SubBill = {
+  selected_numbers:number[];
+  stake: number;
+}
 export type TodayKenoBillStateTypes = {
   fetchAll: ApiCallState<TodayKenoBill[]>;
   fetchOne: ApiCallState<TodayKenoBill | {}>;

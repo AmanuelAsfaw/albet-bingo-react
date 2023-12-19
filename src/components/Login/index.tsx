@@ -18,12 +18,12 @@ const LoginComponent = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const generate_access_tokens = (role: string) =>{
+  const generate_access_tokens = (role: string): string[] =>{
     if(role == 'Casher'){
-      return ['/ticketing','/keno-bills','/keno-game']
+      return ['/ticketing','/keno-bills','/keno-game','/scanned','/resource','/scanned/:id', '/drawed_games']
     }
     else if (role == 'Agent'){
-      return ['/keno-bills', '/keno-report','/keno-game']
+      return ['/keno-bills', '/keno-report','/keno-game','/resource','/drawed_games']
     }
     return []
   }
@@ -57,10 +57,14 @@ const LoginComponent = () => {
             status: "Active",
             token: res.data.refresh,
           }
-          initAxios(res.data.refresh)
+          console.log(res.data);
+          console.log(res.data.access);
+          
+          initAxios(res.data.access)
+          // initAxios(res.data.refresh)
           setLoading(false);
           saveUserData(user);
-          navigate(getRoute(user));
+            navigate(getRoute(user));
         }
         
       })

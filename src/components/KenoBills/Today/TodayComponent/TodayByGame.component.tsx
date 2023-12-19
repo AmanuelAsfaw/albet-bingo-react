@@ -3,14 +3,17 @@ import { connect } from "react-redux";
 import { TodayByGamePropType, deleteCategory } from "../util/Today.util";
 import ReloadButtonComponent from "../../../common/ReloadButton/ReloadButton.component";
 import { Button, Form, Popconfirm, Popover, Select, Table } from "antd";
-import { CheckCircleFilled, CloseCircleFilled, DeleteOutlined, MoreOutlined } from "@ant-design/icons";
+import { CheckCircleFilled, CloseCircleFilled, DeleteOutlined, MoreOutlined, PrinterOutlined } from "@ant-design/icons";
 
 import { OpenNotification } from "../../../common/Notification/Notification.component";
 import { Message, NotificationType } from "../../../../constants/Constants";
 import { ErrorHandler } from "../../../../utilities/utilities";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchAllTodayKenoBill } from "../../../../redux/KenoBills/TodayByGame/TodayByGame.action";
 import { toNumber } from "lodash";
+import { TodayKenoBill } from "../../../../redux/KenoBills/Today/Today.type";
+import { getMaximumPayout, getMinimumPayout } from "../../../Ticketing/util/Tecketing.UI.util";
+import { returnPrintUrl } from "./Today.utils";
 
 const TodayByGameComponent: FC<TodayByGamePropType> = ({ bills, fetchByGameBills }) => {
   const [loading, setLoading] = useState(false);
@@ -137,7 +140,20 @@ const TodayByGameComponent: FC<TodayByGamePropType> = ({ bills, fetchByGameBills
               {
                 title: "Selected Numbers",
                 dataIndex: "selected_numbers",
-                render: (value: any) => value,
+                render: (value: any, record:any) => {
+                  console.log(record);
+                  if(record.has_multiple){
+                    console.log(record);
+                    
+                    return <div>{record.sub_bills.map((e:any) => {
+                      return <div style={{display: 'flex'}}>
+                          {e.selected_numbers}
+                          <div style={{backgroundColor: '#007bff', color: 'white', width: '25px', marginLeft: '5px', marginBottom: '2px', borderRadius: '10px'}}>{e.stake}</div>
+                        </div>
+                    })}</div>
+                  }
+                  return <div>{value}</div>
+                },
               },
               {
                 title: "Stake",
@@ -174,17 +190,20 @@ const TodayByGameComponent: FC<TodayByGamePropType> = ({ bills, fetchByGameBills
                     overlayClassName="action-popover"
                     trigger="focus"
                     zIndex={2000}
-                    content={() => renderPopOverContent(record)}
+                    // content={() => renderPopOverContent(record)}
                   >
-                    <Button
-                      icon={<MoreOutlined />}
-                      className="btn-outline-secondary border-0"
-                    ></Button>
+                    <Link to={returnPrintUrl(record)} style={{'backgroundColor':'#03a0fb', 'color': 'white'}} target="_blank">
+                        <PrinterOutlined />
+                    </Link>
                   </Popover>
                 ),
               },
             ]}
-            dataSource={bills.payload}
+            dataSource={bills.payload.sort((a,b)=> {
+              const a_ = a.id? a.id: 0
+              const b_ = b.id? b.id: 0
+              return b_ - a_
+            })}
             loading={bills.isPending}
           />
         </div>

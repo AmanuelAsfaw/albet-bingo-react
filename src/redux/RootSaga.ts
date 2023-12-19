@@ -417,6 +417,11 @@ import {
 } from "./KenoReport/InstantReport/InstantReport.saga";
 
 import {
+  watcherFetchAllKenoReports as watcherFetchAllAnyDayInstantKenoReports,
+  watcherFetchOneKenoReport as watcherFetchOneAnyDayInstantKenoReport,
+} from "./KenoReport/AnyDayInstantReport/InstantReport.saga";
+
+import {
   watcherFetchAllKenoReports as watcherFetchAllAGameKenoReports,
   watcherFetchOneKenoReport as watcherFetchOneAGameKenoReport,
 } from "./KenoReport/A-GameReport/A-GameReport.saga";
@@ -687,6 +692,8 @@ export default function* RootSaga() {
          
     call(watcherFetchAllInstantKenoReports),
     call(watcherFetchOneInstantKenoReport), 
+    call(watcherFetchAllAnyDayInstantKenoReports),
+    call(watcherFetchOneAnyDayInstantKenoReport), 
     call(watcherFetchAllAGameKenoReports),
     call(watcherFetchOneAGameKenoReport),   
     call(watcherFetchAllAnyDayKenoReports),

@@ -1,0 +1,275 @@
+/* @import url(https://db.onlinewebfonts.com/c/e29dbd30b193565440e63538b8ccc225?family=MotoyaExCedar+W8); */
+@import url(https://db.onlinewebfonts.com/c/652f0773d8097c97b9d86ea8524be563?family=M+Ying+Hei+PRC+W48+W5);
+/* @import url(https://db.onlinewebfonts.com/c/ec01fa8c1569eef75508e875bdcca375?family=User+Upright+W00+Bold+Cameo); */
+@import url(https://fonts.cdnfonts.com/css/good-times-2);
+/* @import url(https://db.onlinewebfonts.com/c/dc1af85609bc9015d574b931ac9ef9fa?family=Rohn+Medium); */
+
+@font-face{
+    font-family: "User Upright W00 Bold Cameo";
+    src: url(../../../fonts/UserUprightW00BoldCameo/ec01fa8c1569eef75508e875bdcca375.eot);
+    src: url(../../../fonts/UserUprightW00BoldCameo/ec01fa8c1569eef75508e875bdcca375.eot?#iefix)format("embedded-opentype"),
+        url(../../../fonts/UserUprightW00BoldCameo/ec01fa8c1569eef75508e875bdcca375.woff)format("woff"),
+        url(../../../fonts/UserUprightW00BoldCameo/ec01fa8c1569eef75508e875bdcca375.woff2)format("woff2"),
+        url(../../../fonts/UserUprightW00BoldCameo/ec01fa8c1569eef75508e875bdcca375.ttf)format("truetype"),
+        url("../../../fonts/UserUprightW00BoldCameo/ec01fa8c1569eef75508e875bdcca375.svg#User Upright W00 Bold Cameo")format("svg");
+    font-weight:normal;
+    font-style:normal;
+    font-display:swap;
+}
+
+@font-face{
+    font-family: "MotoyaExCedar W8";
+    src: url(../../../fonts/MotoyaExCedarW8/e29dbd30b193565440e63538b8ccc225.eot);
+    src: url(../../../fonts/MotoyaExCedarW8/e29dbd30b193565440e63538b8ccc225.eot?#iefix)format("embedded-opentype"),
+        url(../../../fonts/MotoyaExCedarW8/e29dbd30b193565440e63538b8ccc225.woff)format("woff"),
+        url(../../../fonts/MotoyaExCedarW8/e29dbd30b193565440e63538b8ccc225.woff2)format("woff2"),
+        url(../../../fonts/MotoyaExCedarW8/e29dbd30b193565440e63538b8ccc225.ttf)format("truetype"),
+        url("../../../fonts/MotoyaExCedarW8/e29dbd30b193565440e63538b8ccc225.svg#MotoyaExCedar W8")format("svg");
+    font-weight:normal;
+    font-style:normal;
+    font-display:swap;
+}
+
+@font-face{
+    font-family: "Rohn Medium";
+    src: url("../../../fonts/RohnMedium/dc1af85609bc9015d574b931ac9ef9fa.eot");
+    src: url("../../../fonts/RohnMedium/dc1af85609bc9015d574b931ac9ef9fa.eot?#iefix")format("embedded-opentype"),
+        url("../../../fonts/RohnMedium/dc1af85609bc9015d574b931ac9ef9fa.woff")format("woff"),
+        url("../../../fonts/RohnMedium/dc1af85609bc9015d574b931ac9ef9fa.woff2")format("woff2"),
+        url("../../../fonts/RohnMedium/dc1af85609bc9015d574b931ac9ef9fa.ttf")format("truetype"),
+        url("../../../fonts/RohnMedium/dc1af85609bc9015d574b931ac9ef9fa.svg#Rohn Medium")format("svg");
+    font-weight:normal;
+    font-style:normal;
+    font-display:swap;
+}
+
+* {
+    font-size: none;
+}
+.kenogamediv{
+    background-image: linear-gradient(to right, #fe0c0a, #fe020a);
+    min-height: 100vh;
+}
+.main-class-draw{
+    display: flex;
+    height: 100vh;
+    font-family: sans-serif;
+    /* background-image: linear-gradient(to right, #7a0000, #ff2020); */
+}
+.left-window-draw{
+    width: 60%;
+    background-image: linear-gradient(to right, #7a0000, #ff0201);
+    padding: 10px;
+    padding-top: 25px;
+    padding-left: 80px;
+    padding-right: 80px;
+}
+.draw-head-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10, 10,10;
+    font-size: 4vw !important;
+    align-items: baseline;
+}
+.draw-head-title-left{
+    display: flex;
+    flex-direction: row;
+    color: yellow;
+    font-weight: bold;
+    font-size: 4vw !important;
+    /* font-family: "MotoyaExCedar W8"; */
+    font-family: "M Ying Hei PRC W48 W5";
+    background: -webkit-linear-gradient(-86deg, #5a5f16 5%, #190000 53%, #cd0100 91%);
+    /* background-image: linear-gradient( to right, #ffcf46 0, #cb9b51 22%, #f6e27a 45%, #f6f2c0 50%, #f6e27a 55%, #cb9b51 78%, #462523 100% ); */
+    -webkit-background-clip: text;
+    /* -webkit-text-fill-color: transparent; */
+    color: #fcff04;
+    -webkit-text-stroke: 4px transparent;
+}
+.draw-head-title-left-number{
+    color: white;
+    font-size: 4vw !important;
+    -webkit-text-stroke: 0px transparent;
+}
+.draw-head-title-right{
+    display: flex;
+    flex-direction: row;
+    background-color: yellow;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    font-size: 3vw !important;
+    font-family: "MotoyaExCedar W8";
+    font-family: "M Ying Hei PRC W48 W5";
+    max-height: 8vh;
+}
+.draw-number-rows{
+    display: grid;
+    grid-template-rows: auto auto auto auto auto auto auto auto;
+    height: 80%;
+    padding-top: 10px;
+}
+.draw-number-rows-top10{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    align-items: center;
+}
+.draw-number-row{
+    display: flex;
+    flex-direction: row;
+    font-size: 3vw !important;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;    
+}
+.draw-number-row-num{
+    /* width: 100px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0.2vh;
+    margin-right: 0.2vh;
+    margin-bottom: 0.2vh;
+    margin-top: 0.2vh;
+    border-radius: 3vh;
+    font-size: 3vw !important;
+    /* background-image:  linear-gradient(#990800, #9d0800); */
+    background-image:  linear-gradient(#cd1208b0, #9d0800);
+    color: #de1300;
+    font-family: "Rohn Medium";
+    font-weight: 400;
+}
+.draw-number-row-num-active{
+    /* width: 100px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0.2vh;
+    margin-right: 0.2vh;
+    margin-bottom: 0.2vh;
+    margin-top: 0.2vh;
+    border-radius: 3vh;
+    font-size: 3vw;
+    background-color: yellow;
+    font-family: "Rohn Medium";
+    font-weight: 400;
+}
+.draw-footer-keno{
+    font-size: 3vw;
+    font-weight: bolder;
+    /* color: #f98ac1; */
+    color: #de1300;
+    font-family: "Rohn Medium";
+}
+
+/* Left window next game */
+
+.right-window-next{
+    width: 40%;
+    background-image:  linear-gradient(#7d0000, #000000);
+    /* font-size: 50px; */
+    padding-top: 25px;
+}
+.next-head-next{
+    display: flex;
+    justify-content: center;
+    font-size: 4vw;
+}
+.next-head-next-game{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    font-weight: bold;
+    color: #fcff04;
+    font-size: 4vw;
+    font-family: "Rohn Medium";
+}
+.next-head-next-game-number{
+    color: white;
+    font-size: 4vw;
+}
+.next-head-time{
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    color: #fff602;
+    /* font-size: 100px; */
+    font-size: 8vw;
+    background: -webkit-linear-gradient(#fcef0b, #a99b0e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.next-pick{
+    color: red;    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-family: 'Good Times Rg', sans-serif;
+    font-size: 3vw;
+}
+.redText{
+    color: red;
+    font-size: 3vw;
+    font-family: 'Good Times Rg', sans-serif;
+}
+.next-pick-white{
+    color: white;    
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-family: 'Good Times Rg', sans-serif;
+    font-family: "M Ying Hei PRC W48 W5";
+    font-size: 3vw;
+}
+.next-pick-white-small{
+    display: block;
+}
+.next-pick-white-small::first-letter{
+    text-transform: uppercase;
+}
+.next-hits-win{
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 3vw;
+}
+.next-hits{
+    display: flex;
+    flex-direction: column;    
+    margin-left: 50px;
+    font-size: 3vw;
+    font-family: "M Ying Hei PRC W48 W5";
+}
+.next-hits-title{
+    color: yellow;
+    font-weight: 500;
+    font-size: 3vw;
+    font-family: "M Ying Hei PRC W48 W5";
+}
+.next-hits-num{
+    font-size: 3vw;
+    font-family: "M Ying Hei PRC W48 W5";
+}
+.drawingCanvas{
+    width: 40%;
+}
+.top2020draws{
+    position: fixed;
+    right: 5vw;
+    top: 10vh;
+    color: white;
+    font-size: 5vh;
+}
+.top10gamedraw{
+    padding: 10px;
+    padding-left: 80px;
+    padding-right: 80px;
+    background-image: url(carpeet.PNG);
+    background-size: cover;
+}
+.top10game{
+    background-image: linear-gradient(to right, #7a0000, #ff0201);
+}

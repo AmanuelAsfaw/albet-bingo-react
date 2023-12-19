@@ -301,6 +301,7 @@ export const ItemGroupTab = {
 };
 export const TodayReportTab = {
   INSTANT_REPORT: "Instant",
+  ANY_DAY_INSTANT_REPORT: "Any Day Instant",
   A_GAME_REPORT: "A Game",
   ANY_DAY_ALL_GAME_REPORT: "All Game - Any Day",
   ANY_DAY_BY_A_GAME_REPORT: "A Game - Any Day",

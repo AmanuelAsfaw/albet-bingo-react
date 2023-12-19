@@ -24,7 +24,7 @@ export const numbers_list = [
 export const numberWithOdd: {
   [x: number]: number 
 } = {
-  1:3.5,
+  1:3.8,
   2:15,
   3:35,
   4:100,
@@ -116,6 +116,11 @@ export type ConceptType = {
   uploaded_by: number;
   [key: string]: string | number | Date | FileType;
 };
+
+export type SubBillType = {
+  selected_numbers : number[];
+  stake: number;
+}
 
 export const Roles = [{ value: "Resident Engineer" }, { value: "RU" }];
 

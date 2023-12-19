@@ -21,6 +21,7 @@ import TodayReport from "./Today";
 import AnnualReport from "./Annual";
 import MonthlyReport from "./Monthly";
 import WeeklyReport from "./Weekly";
+import SummaryReport from "./Summary";
 
 const DesignComponent = lazy(() => import("./Design"));
 const DeliverablesComponent = lazy(() => import("./Deliverables"));
@@ -169,7 +170,6 @@ const KenoReportComponent: FC<{
 
   return (
     <>
-      <HeaderComponent />
       <Card loading={game.isPending && !game.payload}>
         <Tabs tabPosition="top" activeKey={tab} onChange={onChangeTab}>
           {true ? (
@@ -201,6 +201,17 @@ const KenoReportComponent: FC<{
             >
               <Suspense fallback={<LoadingIndicator />}>
                 <MonthlyReport />
+              </Suspense>
+            </Tabs.TabPane>
+          ) : null}
+          
+          {true ? (
+            <Tabs.TabPane
+              tab={KenoReportTabs.SUMMARY}
+              key={KenoReportTabs.SUMMARY.toLocaleLowerCase()}
+            >
+              <Suspense fallback={<LoadingIndicator />}>
+                <SummaryReport />
               </Suspense>
             </Tabs.TabPane>
           ) : null}

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Tabs from "antd/lib/tabs";
 import LoadingIndicator from "../common/Loading";
 import { Card } from "antd";
-import { fetchOneProjects } from "../../redux/Project/Project.action";
+import { fetchOneData } from "../../redux/KenoGame/KenoGame.action";
 import { useNavigate, useParams } from "react-router-dom";
 import { KenoReportTabs } from "../../constants/Constants";
 import { ApiCallState } from "../../redux/Utils";
@@ -53,8 +53,8 @@ const KenoReportComponent: FC<{
   );
 
   useEffect(() => {
-    fetchOneProjects(id);
-  }, [fetchOneProjects, id]);
+    fetchOneGames(id);
+  }, [fetchOneGames, id]);
 
   useEffect(() => {
     setTab(header);
@@ -252,7 +252,7 @@ const mapStateToProps = (state: any) => ({
  * @param dispatch
  */
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchOneProjects: (payload: any) => dispatch(fetchOneProjects(payload)),
+  fetchOneGames: (payload: any) => dispatch(fetchOneData(payload)),
 });
 
 export default connect(

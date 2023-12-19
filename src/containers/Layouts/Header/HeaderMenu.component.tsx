@@ -158,8 +158,8 @@ const HeaderMenuComponent = () => {
             Ticketing
           </Menu.Item>
         ) : null}
-
-        {checkAuthorization(RouteConstants.KENO_GAME)? (
+        
+        {/* {checkAuthorization(RouteConstants.KENO_GAME)? (
           <Menu.Item
             key={RouteConstants.KENO_GAME}
             // icon={<DollarOutlined />}
@@ -167,7 +167,7 @@ const HeaderMenuComponent = () => {
           >
             Keno Game
           </Menu.Item>
-        ) : null}
+        ) : null} */}
 
         {checkAuthorization(RouteConstants.KENO_BILLS)? (
           <Menu.Item
@@ -186,6 +186,36 @@ const HeaderMenuComponent = () => {
             title="Keno Report"
           >
             Report
+          </Menu.Item>
+        ) : null}
+
+        {checkAuthorization(RouteConstants.SCANNED)? (
+          <Menu.Item
+            key={RouteConstants.SCANNED}
+            // icon={<DollarOutlined />}
+            title="Keno Scanner"
+          >
+            Scanner
+          </Menu.Item>
+        ) : null}
+
+        {checkAuthorization(RouteConstants.DRAWED_GAMES)? (
+          <Menu.Item
+            key={RouteConstants.DRAWED_GAMES}
+            // icon={<DollarOutlined />}
+            title="Drawed Games"
+          >
+            Games
+          </Menu.Item>
+        ) : null}
+
+        {checkAuthorization(RouteConstants.RESOURCE)? (
+          <Menu.Item
+            key={RouteConstants.RESOURCE}
+            // icon={<DollarOutlined />}
+            title="Keno Resource"
+          >
+            Resource
           </Menu.Item>
         ) : null}
 

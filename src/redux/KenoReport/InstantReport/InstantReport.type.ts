@@ -14,8 +14,12 @@ export type KenoInstantReportSummary = {
     revenue:number;
     total_stake:number;
     total_winner_value:number;
+    total_bill_value:number;
+    total_canceled_value:number;
     total_loss:  number;
     total_games:  number;
+    casher: string;
+    branch: string;
 };
 
 export type KenoInstantReportSummaryStateTypes = {

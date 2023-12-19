@@ -25,6 +25,8 @@ import Finance from "../components/Finance/Finance.component";
 import TicketingContainer from "../containers/Ticketing/Ticketing.container";
 import KenoGameContainer from "../containers/KenoGame/KenoGame.container";
 
+import { useNavigate } from "react-router-dom";
+
 const ProjectListComponent = lazy(
   () => import("../containers/Project/Project")
 );
@@ -36,6 +38,15 @@ const KenoReportComponent = lazy(
 );
 const KenoBillsComponent = lazy(
   () => import("../containers/KenoBills/KenoBills.container")
+);
+const KenoScannerComponent = lazy(
+  () => import("../containers/KenoScanner/KenoScanner.container")
+);
+const KenoResourceComponent = lazy(
+  () => import("../containers/KenoResource/KenoResource.container")
+);
+const KenoGamesComponent = lazy(
+  () => import("../containers/KenoGames/KenoGames.container")
 );
 const UserComponent = lazy(
   () => import("../containers/UserManagement/UserManagement")
@@ -55,6 +66,7 @@ const CommunicationComponent = lazy(
 
 const Index = () => {
   const RequireAuth = ({ children }: { children: JSX.Element }) => {
+    const navigate = useNavigate();
     
     const isAuthenticated = isLoggedIn();
     let location = useLocation();
@@ -71,6 +83,18 @@ const Index = () => {
       <Navigate to={RouteConstants.LOGIN} state={{ from: location }} replace />
     );
   };
+  
+  function onBarcodeDetected(code:any){
+      if(code !== null){
+        console.log('====== Barcode Detected ========');
+        console.log(code);
+        // navigate('scanned/'+code);
+        return (
+          <Navigate to={RouteConstants.SCANNED} state={{ code }} replace />
+        );
+        
+      }
+  }
 
   return (
     <Routes>
@@ -382,6 +406,51 @@ const Index = () => {
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
                 <KenoBillsComponent key="73" />
+                </Suspense>
+              </Layout>
+            </RequireAuth>
+          </ErrorBoundary>
+        }
+      />
+
+      <Route
+        path={RouteConstants.SCANNED}
+        element={
+          <ErrorBoundary>
+            <RequireAuth>
+              <Layout>
+                <Suspense fallback={<LoadingIndicator />}>
+                <KenoScannerComponent key="76" />
+                </Suspense>
+              </Layout>
+            </RequireAuth>
+          </ErrorBoundary>
+        }
+      />
+
+      <Route
+        path={RouteConstants.RESOURCE}
+        element={
+          <ErrorBoundary>
+            <RequireAuth>
+              <Layout>
+                <Suspense fallback={<LoadingIndicator />}>
+                <KenoResourceComponent key="77" />
+                </Suspense>
+              </Layout>
+            </RequireAuth>
+          </ErrorBoundary>
+        }
+      />
+
+      <Route
+        path={RouteConstants.DRAWED_GAMES}
+        element={
+          <ErrorBoundary>
+            <RequireAuth>
+              <Layout>
+                <Suspense fallback={<LoadingIndicator />}>
+                <KenoGamesComponent key="78" />
                 </Suspense>
               </Layout>
             </RequireAuth>

@@ -7,6 +7,9 @@ export const RouteConstants = {
   TICKETING: "/ticketing",
   KENO_REPORT: "/keno-report",
   KENO_BILLS: "/keno-bills",
+  SCANNED: "/scanned",
+  RESOURCE: "/resource",
+  DRAWED_GAMES: "/drawed_games",
   /**
    * Dashboard
    */

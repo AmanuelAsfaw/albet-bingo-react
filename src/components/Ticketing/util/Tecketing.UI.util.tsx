@@ -1,6 +1,9 @@
 import { Fragment } from "react"
-import { max_selectedNumbers, numberWithOdd } from "./Ticketing.util"
+import { SubBillType, max_selectedNumbers, numberWithOdd } from "./Ticketing.util"
 import axios from "axios"
+import { MainUrl } from "../../../constants/Url"
+// import { initAxios as axios } from "../../../utilities/utilities"
+
 
 export function TableDisplay({length}: {['length']: number}){
     if(length === 1){
@@ -233,37 +236,76 @@ export function getMaximumPayout( stake: number,length: number){
 }
 
 export function getMinimumPayout( stake: number,length: number){
-    if(length === 1 || length === 2){
-        // setMinPayOut(stake * numberWithOdd[length])
-        return stake * numberWithOdd[length]
+    if(length === 1){
+        return stake * 3.8
     }
-    else if(length === 3 || length === 4 || length === 4){
-        // setMinPayOut(stake * numberWithOdd[2])
-        return stake * numberWithOdd[2]
+    else if(length === 2){
+        return stake * 15
     }
-    else if(length === 6){
-        // setMinPayOut(stake * numberWithOdd[3])
-        return stake * numberWithOdd[3]
+    else if(length === 3){
+        return stake * 3
     }
+    else if(length === 4  || length === 5 || length === 6  ){
+        return stake
+    }
+    
     return 0
 }
 
+export function getMaximumPayoutForList(sub_bills: SubBillType[]){
+    
+    let max_pay = 0;
+    for (let index = 0; index < sub_bills.length; index++) {
+        const element = sub_bills[index];
+        const selected_numbers = element.selected_numbers.toString().split(',')
+        const max_ = getMaximumPayout(element.stake, selected_numbers.length)
+        
+        max_pay = max_pay + max_
+    }
+    return max_pay
+}
 
-export function AddToBetSlip( setBetSlip: Function, selectedNumbers: number[]){
+export function getMinimumPayoutForList(sub_bills: SubBillType[]){
+    let min_pay = 100000;
+    for (let index = 0; index < sub_bills.length; index++) {
+        const element = sub_bills[index];
+        const selected_numbers = element.selected_numbers.toString().split(',')
+        const max_ = getMaximumPayout(element.stake, selected_numbers.length)
+        if( max_ < min_pay){
+            min_pay = max_
+        }
+    }
+    return min_pay
+}
+
+export function AddToBetSlip( setDisableBetSlip: Function, setBetSlip: Function, selectedNumbers: number[], subBillList: SubBillType[], stake: number){
     setBetSlip(null)
-    if(selectedNumbers.length > 0){            
-        axios.post('http://127.0.0.1:8000/casher/add_bill',
+    let selected_numbers: { numbers: number[]; stake: number }[] = []
+    if(subBillList.length == 0){
+        selected_numbers = [{"numbers":selectedNumbers, "stake":stake}]
+    }
+    else if(subBillList.length > 0){
+        selected_numbers = subBillList.map((element) => {
+            return {"numbers":element.selected_numbers, "stake":element.stake}
+        })
+    }
+    if(selectedNumbers.length > 0 || subBillList.length > 0){     
+        setDisableBetSlip(true)       
+        axios.post(MainUrl+'/casher/add_bill',
             {
                 "game_id": 200,
-                "selected_numbers" : selectedNumbers
+                "selected_numbers" : selected_numbers,
+                "stake": stake,
             }
         )
         .then((response) => {
             setBetSlip(response.data)
+            setDisableBetSlip(false)
         })
         .catch(error => {
             console.log('AddToBetSlip error catch');
             console.error(error);
+            setDisableBetSlip(false)
         })
     }
 }

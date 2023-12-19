@@ -193,8 +193,11 @@ td {
     font-size: 90%;
     align-items: center;
     box-shadow: 0 3px 10px rgb(0, 0, 0, 0.4);
+    cursor: pointer;
 }
-
+.box:hover{
+    background-color: yellow;
+}
 .report_box1 {
     display: flex;
     text-align: center;
@@ -226,5 +229,5 @@ td {
     background-color: green;
     color: #fff;
     border-radius: 150px;
-
+    cursor: pointer;
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 // import { API_BASE_URI } from "../../../redux/ApiCall";
-import { LocalUrl as API_BASE_URI } from "../../../constants/Url";
+import { MainUrl as API_BASE_URI } from "../../../constants/Url";
 import { User } from "../../../redux/User/User.type";
 import { RouteConstants } from "../../../router/Constants";
 

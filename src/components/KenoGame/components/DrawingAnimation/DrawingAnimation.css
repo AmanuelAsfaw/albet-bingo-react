@@ -1,0 +1,241 @@
+.keno-draw {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: '400px';
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+.keno-draw-container {
+    margin-top: -55px;
+    margin-left: 20px;
+    margin-right: 20px;
+    position: relative;
+    width: 360px;
+    height: 360px; /* Increased height to accommodate the pipelines */
+    background-color: #eee;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%; 
+    border-image:url(glass-background.jpg);
+    border-radius: 50%;
+    overflow: hidden;
+    border: 15px solid #999;
+    box-shadow: 10px 10px 10px 10px #e5dddd;
+}
+  
+.pipeline-top,
+.pipeline-top-ring,
+.pipeline-bottom-ring,
+.pipeline-bottom {
+    /* position: absolute; */
+    width: 250px;
+    height: 20px;
+    background-color: #999;
+    border-radius: 10px;
+    top: 100px;
+    /* left: 50%; */
+    /* transform: translateX(-50%); */
+    z-index: 1000;
+}
+  
+.pipeline-top,
+.pipeline-bottom {
+    /* top: 380px; */
+    /* margin-top: 10px; */
+    background-color: #b8b3b3;
+    background-image: "url(/images.jpg)";
+    
+    /* border-color: black; */
+    /* border: 1px solid; */
+    height: 120px;
+}
+.pipeline-bottom-ring {
+    margin-top: -55px;
+}
+
+.keno-ball {
+    position: absolute;
+    /* top: -100px; */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    height: 250px;
+    background-color: rgb(13, 246, 79);
+    border-radius: 50%;
+    animation: keno-ball-animation 2s infinite;
+    text-align: center;
+    font-size: larger;
+    font-weight: 900;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 190px;
+}
+  
+@keyframes keno-ball-animation {
+    0% {
+      top: -100px;
+    }
+    50% {
+      top: 50%;
+    }
+    100% {
+      top: 340px; /* Adjusted to align with the bottom pipeline */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.drawing-part{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    background-color: rgb(253 2 1);
+}
+
+.draw-full-container{
+    position: relative;
+    height: 100vh;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.top-draw-part{
+    height: 25vh;
+    border: solid 0px;
+    width: 70%;
+    z-index: 2;
+    background-color: transparent;
+}
+.top-draw-plate{
+    background-image: url(plate.png);
+    background-size: cover;
+    height: 6vh;
+    width: 100%vh;
+}
+.top-draw-tube-above-tube-parent,
+.top-draw-tube-parent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.top-draw-tube-above-tube{
+    background-image: url(toptube.png);
+    height: 4vw;
+    width: 35vh;
+}
+.top-draw-above-tube{
+    background-image: url(topabovetube.png);
+    background-size: cover;
+    height: 2vh;
+    width: 40vh;
+    
+}
+.top-draw-tube,
+.bottom-draw-tube{
+    background-image: url(toptube.png);
+    background-size: cover;
+    height: 15vh;
+    width: 35vh;
+}
+.bottom-draw-tube{
+    background-image: url(bottomtube.png);
+    height: 10vh;
+}
+.middle-draw-part{
+    position: relative;
+    border: solid 1px;
+    width: 60vh;
+    height: 60vh;
+    margin-top: -7dvh;
+    margin-bottom: -8vh;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #330404;
+}
+.internal-middle-draw-part{
+    border: solid 1px;
+    /* width: 450px;
+    height: 450px; */
+    width: 50vh;
+    height: 59vh;
+    /* margin-top: -75px;
+    margin-bottom: -75px; */
+    border-radius: 50%;
+    background-color: rgb(253 2 1);
+
+}
+.bottom-draw-part{
+    height: 25vh;
+    border: solid 0px;
+    background-color: transparent;
+    width: 40vh;
+    z-index: 2;
+}
+.bottom-draw-plate{
+    background-image: url(plate.png);
+    background-size: cover;
+    height: 6vh;
+    width: 40vh;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* animation related to balls */
+
+
+.keno-ball-first {
+    position: absolute;
+    /* top: -100px; */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35vh;
+    height: 35vh;
+    background-color: yellow;
+    border-radius: 50%;
+    animation: keno-ball-animation 3s infinite;
+    animation-duration: 3s;
+    text-align: center;
+    font-size: larger;
+    font-weight: 900;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 190px;
+}
+  
+@keyframes keno-ball-animation {
+    0% {
+      top: 340px;
+    }
+    50% {
+      top: 50%;
+    }
+    100% {
+      top: -100px; /* Adjusted to align with the bottom pipeline */
+    }
+}
+

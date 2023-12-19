@@ -3,6 +3,7 @@ import { LoadingScreenPropType, max_selectedNumbers, numberWithOdd } from "./Ken
 import axios from "axios"
 import { RightOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom";
+import { MainUrl } from "../../../constants/Url";
 
 export function TableDisplay({length}: {['length']: number}){
     if(length === 1){
@@ -300,7 +301,7 @@ export function getMinimumPayout( stake: number,length: number){
 export function AddToBetSlip( setBetSlip: Function, selectedNumbers: number[]){
     setBetSlip(null)
     if(selectedNumbers.length > 0){            
-        axios.post('http://127.0.0.1:8000/casher/add_bill',
+        axios.post(MainUrl+'/casher/add_bill',
             {
                 "game_id": 200,
                 "selected_numbers" : selectedNumbers
@@ -336,3 +337,495 @@ export function removeFromSelectedNumbers( selectedNumbers: number[], item:numbe
         }
     }
 }
+
+export type PickPropType = {
+    nextGameTime: number;
+    nextGame : any;
+  };
+  
+export const Pick3Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick">Pick 3</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">3</div>
+                            <div className="next-hits-num">2</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">35</div>
+                            <div className="next-hits-num">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+}
+  
+export const Pick2Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick">Pick 2</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">2</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">15</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+}
+
+export const Pick1Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick">Pick 1</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">1</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">3.80</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+} 
+
+export const Pick4Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick">Pick 4</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">4</div>
+                            <div className="next-hits-num">3</div>
+                            <div className="next-hits-num">2</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">100</div>
+                            <div className="next-hits-num">8</div>
+                            <div className="next-hits-num">1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+}
+  
+export const Pick5Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick">Pick 5</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">5</div>
+                            <div className="next-hits-num">4</div>
+                            <div className="next-hits-num">3</div>
+                            <div className="next-hits-num">2</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">300</div>
+                            <div className="next-hits-num">15</div>
+                            <div className="next-hits-num">3</div>
+                            <div className="next-hits-num">1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+}
+    
+export const Pick6Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick">Pick 6</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">6</div>
+                            <div className="next-hits-num">5</div>
+                            <div className="next-hits-num">4</div>
+                            <div className="next-hits-num">3</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">1,800</div>
+                            <div className="next-hits-num">70</div>
+                            <div className="next-hits-num">10</div>
+                            <div className="next-hits-num">1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+}
+    
+export const Pick7Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick">Pick 7</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">7</div>
+                            <div className="next-hits-num">6</div>
+                            <div className="next-hits-num">5</div>
+                            <div className="next-hits-num">4</div>
+                            <div className="next-hits-num">3</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">2150</div>
+                            <div className="next-hits-num">120</div>
+                            <div className="next-hits-num">12</div>
+                            <div className="next-hits-num">6</div>
+                            <div className="next-hits-num">1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+}
+    
+export const Pick8Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick">Pick 8</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">8</div>
+                            <div className="next-hits-num">7</div>
+                            <div className="next-hits-num">6</div>
+                            <div className="next-hits-num">5</div>
+                            <div className="next-hits-num">4</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">3000</div>
+                            <div className="next-hits-num">600</div>
+                            <div className="next-hits-num">68</div>
+                            <div className="next-hits-num">8</div>
+                            <div className="next-hits-num">4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+}
+     
+export const Pick9Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick">Pick 9</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">9</div>
+                            <div className="next-hits-num">8</div>
+                            <div className="next-hits-num">7</div>
+                            <div className="next-hits-num">6</div>
+                            <div className="next-hits-num">5</div>
+                            <div className="next-hits-num">4</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">4200</div>
+                            <div className="next-hits-num">1800</div>
+                            <div className="next-hits-num">120</div>
+                            <div className="next-hits-num">18</div>
+                            <div className="next-hits-num">6</div>
+                            <div className="next-hits-num">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+}
+      
+export const Pick10Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick">Pick 10</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">10</div>
+                            <div className="next-hits-num">9</div>
+                            <div className="next-hits-num">8</div>
+                            <div className="next-hits-num">7</div>
+                            <div className="next-hits-num">6</div>
+                            <div className="next-hits-num">5</div>
+                            <div className="next-hits-num">4</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">5000</div>
+                            <div className="next-hits-num">2500</div>
+                            <div className="next-hits-num">400</div>
+                            <div className="next-hits-num">40</div>
+                            <div className="next-hits-num">12</div>
+                            <div className="next-hits-num">4</div>
+                            <div className="next-hits-num">2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+}
+       
+export const x1Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick-white">Pick <div className="next-pick">&nbsp;1&nbsp;</div> to <div className="next-pick">&nbsp;10</div></div>
+                    <div className="next-pick-white">NUMBERS</div>
+                    <div className="next-pick-white">FROM <div className="redText">&nbsp;80</div></div>
+                </div>
+            </div>
+    )
+}
+         
+export const x2Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick-white"><div className="next-pick">&nbsp;20&nbsp;</div> Balls</div>
+                    <div className="next-pick-white">Drawn</div>
+                    <div className="next-pick-white">FROM <div className="redText">&nbsp;80</div></div>
+                </div>
+            </div>
+    )
+}
+          
+export const x3Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick-white" style={{fontSize: '3vw', fontFamily: 'sans-serif'}}>play</div>
+                    <div className="next-pick-white" style={{fontSize: '3vw', fontFamily: 'sans-serif'}}>The<div className="next-pick" style={{fontSize: '3vw'}}>&nbsp;Pick 10 &nbsp;</div> Game</div>
+                    <div className="next-pick-white" style={{fontSize: '3vw'}}>Get<div className="next-pick" style={{fontSize: '3vw'}}>&nbsp; 10 &nbsp;</div> Numbers</div>
+                    <div className="next-pick-white">correct, and</div>
+                    <div className="next-pick-white">win the</div>
+                    <div className="next-pick-white"><div className="redText">Pick&nbsp;10&nbsp;</div> JACKPOT</div>
+                </div>
+            </div>
+    )
+}
+           
+export const x4Display: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time">0{Math.floor(nextGameTime != null ?nextGameTime/60:0)}:{ Math.floor(nextGameTime? nextGameTime%60: 0).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}</div>
+                </div>
+                <div className="next-pick">
+                    <div className="next-pick-white" style={{fontSize: '3vw', fontFamily: 'sans-serif'}}><div className="next-pick">&nbsp;Pick 3 &nbsp;</div></div>
+                    <div className="next-pick-white" style={{fontSize: '3vw', fontFamily: 'sans-serif'}}>TO</div>
+                    <div className="next-pick-white" style={{fontSize: '3vw', fontFamily: 'sans-serif'}}><div className="next-pick">&nbsp;Pick 10 &nbsp;</div></div>
+                    <div className="next-pick-white" style={{fontSize: '3vw', fontFamily: 'sans-serif'}}>games have</div>
+                    <div className="next-pick-white" style={{fontSize: '3vw', fontFamily: 'sans-serif'}}><div className="next-pick" style={{color: 'yellow'}}>&nbsp;Multiple &nbsp;</div></div>
+                    <div className="next-pick-white" style={{fontSize: '3vw', fontFamily: 'sans-serif'}}><div className="next-pick" style={{color: 'yellow'}}>&nbsp;Play Levels &nbsp;</div></div>
+                    <div className="next-pick-white">on other spots</div>
+                </div>
+            </div>
+    )
+}
+            
+export const closeDisplay: FC<PickPropType> = ({nextGameTime, nextGame}) => {
+    
+    return(
+        <div className="right-window-next">
+                <div className="next-head-next">
+                    <div className="next-head-next-game">DRAW &nbsp;<div className="next-head-next-game-number">{nextGame !== null ? nextGame.game_number: null}</div></div>
+                </div>
+                <div className="next-head-time">
+                    <div className="next-head-time" style={{fontSize: '5vw', fontFamily: 'Rohn Medium'}}>BETS CLOSED</div>
+                </div>
+                
+                <div className="next-pick">
+                    <div className="next-pick">Pick 4</div>
+                </div>
+                <div className="next-hits-win">
+                    <div className="next-hits">
+                        <div className="next-hits-title">HITS</div>
+                        <div>
+                            <div className="next-hits-num">4</div>
+                            <div className="next-hits-num">3</div>
+                            <div className="next-hits-num">2</div>
+                        </div>
+                    </div>
+                    <div className="next-hits">
+                        <div className="next-hits-title">WIN</div>
+                        <div>
+                            <div className="next-hits-num">100</div>
+                            <div className="next-hits-num">8</div>
+                            <div className="next-hits-num">1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    )
+}
+       
+  

@@ -2,7 +2,8 @@ import { ApiCallState } from "../Utils";
 
 export type KenoCasher = {
     id: number | null;
-    local_date:string;
+    branch:any;
+    user:any;
     game_number:number;
     state:string;
     status: string;

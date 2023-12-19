@@ -111,6 +111,7 @@ import KenoThisMonthBillReducer from "./KenoBills/ThisMonth/ThisMonthBill.reduce
 import KenoAnyMonthBillReducer from "./KenoBills/AnyMonth/AnyMonthBill.reducer";
 
 import KenoInstantReportReducer from "./KenoReport/InstantReport/InstantReport.reducer";
+import KenoAnyDayInstantReportReducer from "./KenoReport/AnyDayInstantReport/InstantReport.reducer";
 import KenoAGameReportReducer from "./KenoReport/A-GameReport/A-GameReport.reducer";
 import KenoAnyDayReportReducer from "./KenoReport/AnyDayReport/AnyDayReport.reducer";
 import KenoAGameAnyDayReportReducer from "./KenoReport/A-GameAnyDayReport/A-GameAnyDayReport.reducer";
@@ -250,6 +251,7 @@ const RootReducer = combineReducers({
   // Report
   // Report Today
   keno_instant_report : KenoInstantReportReducer,
+  keno_any_day_instant_report : KenoAnyDayInstantReportReducer,
   keno_a_game_today_report : KenoAGameReportReducer,
   keno_any_day_report : KenoAnyDayReportReducer,
   keno_any_day_by_game_report : KenoAGameAnyDayReportReducer,
