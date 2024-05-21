@@ -20,10 +20,10 @@ const LoginComponent = () => {
 
   const generate_access_tokens = (role: string): string[] =>{
     if(role == 'Casher'){
-      return ['/ticketing','/keno-bills','/keno-game','/scanned','/resource','/scanned/:id', '/drawed_games']
+      return ['/', '/bingo_game']
     }
     else if (role == 'Agent'){
-      return ['/keno-bills', '/keno-report','/keno-game','/resource','/drawed_games']
+      return ['/keno-bills', '/keno-report','/keno-game','/resource','/drawed_games', '/bingo_game']
     }
     return []
   }

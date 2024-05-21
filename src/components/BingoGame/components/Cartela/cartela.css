@@ -1,0 +1,128 @@
+.bingo-cartela-main-page {
+    padding: 50px;
+}
+.bingo-cartela-nums-main {
+    width: 60%;
+}
+.bingo-cartela-nums {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+    background-color: #181818;
+    color: #323232;
+    padding: 10px;
+}
+.bingo-cartela-nums-item, .bingo-cartela-nums-item-select {
+    /* background-color: rgba(255, 255, 255, 0.8); */
+    /* border: 1px solid rgba(0, 0, 0, 0.8); */
+    padding: 10px;
+    font-size: 30px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 500;
+    border-radius: 100%;
+    background-color: #1898d5;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.bingo-cartela-nums-item:hover {
+    border: 2px solid gold;
+    color: goldenrod;
+    cursor: pointer;
+}
+
+.bingo-cartela-nums-item-select {
+    border: 3px solid white;
+    color: white;
+    cursor: pointer;
+}
+.current-cartela-main{
+    width: 40%;
+    background-color: #323232;
+    color: white;
+    padding: 20px;
+}
+.d-flex-space-between{
+    display: flex;
+    justify-content: space-between;
+}
+
+.bingo-single-cartela-nums {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    background-color: #181818;
+    color: #323232;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+.bingo-single-cartela-nums-vertical {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    background-color: #181818;
+    color: #323232;
+    padding: 10px;
+    padding-top: 0px;
+}
+.bingo-single-cartela-nums-item, .bingo-single-cartela-nums-item-called {
+    /* background-color: rgba(255, 255, 255, 0.8); */
+    /* border: 1px solid rgba(0, 0, 0, 0.8); */
+    padding: 5px;
+    font-size: 30px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 500;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    margin: 5px;
+    height: 45px;
+}
+.bingo-single-cartela-nums-item-called {
+    color: white;
+    background-color: red;
+}
+.bingo-single-cartela-nums-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    background-color: white;
+    margin: 5px;
+    padding: 5px;
+    font-size: 35px;
+}
+.bingo-cartela-btn {
+    padding: 5px;
+    margin: 5px;
+    background-color: #1898d5;
+    font-weight: bold;
+    border-radius: 7px;
+}
+.bingo-cartela-btn:hover {
+    background-color: #1898d5;
+    border: 2px solid white;
+    padding: 5px;
+}
+.bingo-cartela-icon-btn:hover {
+    background-color: #1898d5;
+    padding: 5px;
+}
+.bingo-single-cartela-nums-item-input {
+    font-weight: bold;
+}
+.winner-notify-text{
+    background-color: green;
+    text-align: center;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-radius: 1px;
+    border-top-left-radius: 55px;
+    border-bottom-right-radius: 55px;
+}

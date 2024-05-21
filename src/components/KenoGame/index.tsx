@@ -55,7 +55,6 @@ import "./albet.css"
 import { child_anim_style, drawsNum_style, patent_style, reSizefontSize, wrapper_style } from "./keno.style";
 import { useNavigate } from "react-router-dom";
 
-import * as fs from 'fs';
 import { Video, getVideoByNameUpdateState,getCarpeetImageUpdateState, getVideoListByName, ImageCustom } from "../KenoResource/util/IndexedDB.util";
 
 const KenoGameComponent: FC<StatusBoardPropType> = ({

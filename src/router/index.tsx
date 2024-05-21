@@ -18,51 +18,54 @@ import {
   isLoggedIn,
 } from "../utilities/utilities";
 import ErrorBoundary from "../containers/Errors/ErrorBoundary/ErrorBoundary.component";
-import ViewKlingMaterialApproval from "../components/ProjectMenu/Supervision/KlingMaterialApproval/components/View/ViewKlingMaterialApproval";
-import WeeklyPlanReport from "../components/ProjectMenu/WeeklyPlanReport";
-import ReportComponent from "../containers/Report/Reports.component";
-import Finance from "../components/Finance/Finance.component";
-import TicketingContainer from "../containers/Ticketing/Ticketing.container";
-import KenoGameContainer from "../containers/KenoGame/KenoGame.container";
+// import ViewKlingMaterialApproval from "../components/ProjectMenu/Supervision/KlingMaterialApproval/components/View/ViewKlingMaterialApproval";
+// import WeeklyPlanReport from "../components/ProjectMenu/WeeklyPlanReport";
+// import ReportComponent from "../containers/Report/Reports.component";
+// import Finance from "../components/Finance/Finance.component";
+// import TicketingContainer from "../containers/Ticketing/Ticketing.container";
+// import KenoGameContainer from "../containers/KenoGame/KenoGame.container";
 
 import { useNavigate } from "react-router-dom";
 
-const ProjectListComponent = lazy(
-  () => import("../containers/Project/Project")
+// const ProjectListComponent = lazy(
+//   () => import("../containers/Project/Project")
+// );
+// const ProjectComponent = lazy(
+//   () => import("../containers/ProjectMenu/ProjectMenu")
+// );
+// const KenoReportComponent = lazy(
+//   () => import("../containers/KenoReport/KenoReport")
+// );
+// const KenoBillsComponent = lazy(
+//   () => import("../containers/KenoBills/KenoBills.container")
+// );
+// const KenoScannerComponent = lazy(
+//   () => import("../containers/KenoScanner/KenoScanner.container")
+// );
+// const KenoResourceComponent = lazy(
+//   () => import("../containers/KenoResource/KenoResource.container")
+// );
+// const KenoGamesComponent = lazy(
+//   () => import("../containers/KenoGames/KenoGames.container")
+// );
+const BingoGamesComponent = lazy(
+  () => import("../containers/BingoGame/BingoGame.container")
 );
-const ProjectComponent = lazy(
-  () => import("../containers/ProjectMenu/ProjectMenu")
-);
-const KenoReportComponent = lazy(
-  () => import("../containers/KenoReport/KenoReport")
-);
-const KenoBillsComponent = lazy(
-  () => import("../containers/KenoBills/KenoBills.container")
-);
-const KenoScannerComponent = lazy(
-  () => import("../containers/KenoScanner/KenoScanner.container")
-);
-const KenoResourceComponent = lazy(
-  () => import("../containers/KenoResource/KenoResource.container")
-);
-const KenoGamesComponent = lazy(
-  () => import("../containers/KenoGames/KenoGames.container")
-);
-const UserComponent = lazy(
-  () => import("../containers/UserManagement/UserManagement")
-);
+// const UserComponent = lazy(
+//   () => import("../containers/UserManagement/UserManagement")
+// );
 const EnterpriseLoginComponent = lazy(() => import("../components/Login"));
-const SignupComponent = lazy(() => import("../components/Signup/index"));
-const TaskComponent = lazy(() => import("../containers/Task/Task.component"));
-const StatusBoardComponent = lazy(
-  () => import("../containers/StatusBoard/StatusBoard.component")
-);
-const LettersComponent = lazy(
-  () => import("../containers/Letter/Letters.component")
-);
-const CommunicationComponent = lazy(
-  () => import("../containers/Communication/Communication.component")
-);
+// const SignupComponent = lazy(() => import("../components/Signup/index"));
+// const TaskComponent = lazy(() => import("../containers/Task/Task.component"));
+// const StatusBoardComponent = lazy(
+//   () => import("../containers/StatusBoard/StatusBoard.component")
+// );
+// const LettersComponent = lazy(
+//   () => import("../containers/Letter/Letters.component")
+// );
+// const CommunicationComponent = lazy(
+//   () => import("../containers/Communication/Communication.component")
+// );
 
 const Index = () => {
   const RequireAuth = ({ children }: { children: JSX.Element }) => {
@@ -114,7 +117,7 @@ const Index = () => {
         element={
           <ErrorBoundary>
             <Suspense fallback={<LoadingIndicator />}>
-              <SignupComponent />
+              {/* <SignupComponent /> */}
             </Suspense>
           </ErrorBoundary>
         }
@@ -127,7 +130,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <TaskComponent />{" "}
+                  {/* <TaskComponent />{" "} */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -143,7 +146,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <TaskComponent />{" "}
+                  {/* <TaskComponent />{" "} */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -158,7 +161,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <TaskComponent />{" "}
+                  {/* <TaskComponent />{" "} */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -172,7 +175,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <LettersComponent />{" "}
+                  {/* <LettersComponent />{" "} */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -187,7 +190,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <ProjectComponent />
+                  {/* <ProjectComponent /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -202,7 +205,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <ProjectComponent />{" "}
+                  {/* <ProjectComponent />{" "} */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -217,7 +220,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <ProjectComponent />{" "}
+                  {/* <ProjectComponent />{" "} */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -232,7 +235,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <ProjectListComponent key="1" />{" "}
+                  {/* <ProjectListComponent key="1" />{" "} */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -247,7 +250,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <ProjectListComponent key="2" />{" "}
+                  {/* <ProjectListComponent key="2" />{" "} */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -262,7 +265,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <UserComponent />{" "}
+                  {/* <UserComponent />{" "} */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -277,7 +280,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <CommunicationComponent key="2" />
+                  {/* <CommunicationComponent key="2" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -292,7 +295,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <ReportComponent key="5" />
+                  {/* <ReportComponent key="5" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -307,7 +310,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <ViewKlingMaterialApproval key="45" />
+                  {/* <ViewKlingMaterialApproval key="45" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -321,7 +324,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <WeeklyPlanReport key="46" />
+                  {/* <WeeklyPlanReport key="46" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -336,7 +339,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <StatusBoardComponent key="47" />
+                  {/* <StatusBoardComponent key="47" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -351,7 +354,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <Finance key="48" />
+                  {/* <Finance key="48" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -366,7 +369,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                  <TicketingContainer key="70" />
+                  {/* <TicketingContainer key="70" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -378,7 +381,7 @@ const Index = () => {
         path={RouteConstants.KENO_GAME}
         element={
           <Suspense fallback={<LoadingIndicator />}>
-            <KenoGameContainer key="71" />
+            {/* <KenoGameContainer key="71" /> */}
           </Suspense>
         }
       />
@@ -390,7 +393,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                <KenoReportComponent key="72" />
+                {/* <KenoReportComponent key="72" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -405,7 +408,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                <KenoBillsComponent key="73" />
+                {/* <KenoBillsComponent key="73" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -420,7 +423,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                <KenoScannerComponent key="76" />
+                {/* <KenoScannerComponent key="76" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -435,7 +438,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                <KenoResourceComponent key="77" />
+                {/* <KenoResourceComponent key="77" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -450,7 +453,7 @@ const Index = () => {
             <RequireAuth>
               <Layout>
                 <Suspense fallback={<LoadingIndicator />}>
-                <KenoGamesComponent key="78" />
+                {/* <KenoGamesComponent key="78" /> */}
                 </Suspense>
               </Layout>
             </RequireAuth>
@@ -459,10 +462,27 @@ const Index = () => {
       />
 
       <Route
+        path={RouteConstants.BINGO_GAME}
+        element={
+          <ErrorBoundary>
+            {/* <RequireAuth> */}
+                <Suspense fallback={<LoadingIndicator />}>
+                {/* <BingoGamesComponent key="78" /> */}
+                </Suspense>
+            {/* </RequireAuth> */}
+          </ErrorBoundary>
+        }
+      />
+
+      <Route
         path={"/"}
         element={
           <Suspense fallback={<LoadingIndicator />}>
-            <KenoGameContainer key="74" />
+            <RequireAuth>
+                <Suspense fallback={<LoadingIndicator />}>
+                <BingoGamesComponent key="78" />
+                </Suspense>
+            </RequireAuth>
           </Suspense>
         }
       />

@@ -10,6 +10,7 @@ export const RouteConstants = {
   SCANNED: "/scanned",
   RESOURCE: "/resource",
   DRAWED_GAMES: "/drawed_games",
+  BINGO_GAME: "/bingo_game",
   /**
    * Dashboard
    */

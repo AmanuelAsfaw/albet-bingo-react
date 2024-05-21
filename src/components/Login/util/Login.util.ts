@@ -5,7 +5,7 @@ import { User } from "../../../redux/User/User.type";
 import { RouteConstants } from "../../../router/Constants";
 
 export const login = (data: any) =>
-  axios.post(API_BASE_URI + "/casher/api-token-auth", data);
+  axios.post(API_BASE_URI + "/bingo/api-token-auth", data);
   // axios.post(API_BASE_URI + "/casher/custome-login", data);
 
 export const sendConfirmation = (email: string) => {
