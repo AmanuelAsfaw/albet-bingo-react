@@ -129,6 +129,61 @@ const BingoGameComponent = () => {
     useEffect(()=>{
       get_cashier_data(setCashier)
     }, [])
+
+    useEffect(()=>{
+      if (bingoGame){
+        localStorage.setItem('previousCalls', JSON.stringify(previousCalls))
+      }
+    }, [previousCalls])
+    
+    useEffect(()=>{
+      if (bingoGame){
+        localStorage.setItem('drawNumbers', JSON.stringify(drawNumbers))
+      }
+    }, [drawNumbers])
+
+    useEffect(()=>{
+      if (bingoGame){
+        localStorage.setItem('calledNumbers', JSON.stringify(calledNumbers))
+      }
+    }, [calledNumbers])
+    
+    useEffect(()=>{
+      if (bingoGame){
+        localStorage.setItem('bingoGame', JSON.stringify(bingoGame))
+      }
+    }, [bingoGame])
+    
+    useEffect(()=>{
+      if (bingoGame){
+        localStorage.setItem('automatic', JSON.stringify(automatic))
+      }
+    }, [automatic])
+
+    useEffect(()=>{
+      if (bingoGame){
+        localStorage.setItem('callIndex', callIndex.toString())
+      }
+    }, [callIndex])
+    
+    useEffect(()=>{
+      if (bingoGame){
+        localStorage.setItem('callTimeInSeconds', callTimeInSeconds.toString())
+      }
+    }, [callTimeInSeconds])
+     
+    useEffect(()=>{
+      if (bingoGame){
+        localStorage.setItem('selectedCartelas', JSON.stringify(selectedCartelas))
+      }
+    }, [selectedCartelas])
+    
+    useEffect(()=>{
+      if (bingoGame){
+        localStorage.setItem('checkedCartelas', JSON.stringify(checkedCartelas))
+      }
+    }, [checkedCartelas])
+    
     const SegmentedItem = (item:string) => {
       const is_active = item == 'Fast' && callTimeInSeconds < 3? true:
         item == 'Normal' && callTimeInSeconds < 8? true:
@@ -141,6 +196,57 @@ const BingoGameComponent = () => {
       return <div style={{color: 'black', backgroundColor: 'white', minWidth: '100%', paddingLeft: '10px', paddingRight: '10px', marginTop: '5px', marginBottom: '5px', borderRadius: '2px'}}>
         {item}
       </div>
+    }
+
+    const getLastGame = () => {
+      console.log('getLastGame');
+      const bingoGame_local = localStorage.getItem('bingoGame')
+      const calledNumbers_local = localStorage.getItem('calledNumbers')
+      const previousCalls_local = localStorage.getItem('previousCalls')
+      const drawNumbers_local = localStorage.getItem('drawNumbers')
+      const automatic_local = localStorage.getItem('automatic')
+      const callIndex_local = localStorage.getItem('callIndex')
+      const callTimeInSeconds_local = localStorage.getItem('callTimeInSeconds')
+      const selectedCartelas_local = localStorage.getItem('selectedCartelas')
+      const checkedCartelas_local = localStorage.getItem('checkedCartelas')
+      if(bingoGame_local){
+        console.log(JSON.parse(bingoGame_local));
+        setBingoGame(JSON.parse(bingoGame_local));
+      }
+      if(calledNumbers_local){
+        console.log(JSON.parse(calledNumbers_local));
+        setCalledDrawNumbers(JSON.parse(calledNumbers_local));
+      }
+      if(previousCalls_local){
+        console.log(JSON.parse(previousCalls_local));
+        setPreviousCalls(JSON.parse(previousCalls_local));
+      }
+      if(drawNumbers_local){
+        console.log(JSON.parse(drawNumbers_local));
+        setDrawNumbers(JSON.parse(drawNumbers_local));
+      }
+      if(automatic_local){
+        console.log(automatic_local?automatic_local:'');
+        setAutomatic(automatic_local?automatic_local:'');
+      }
+      if(callIndex_local){
+        console.log(parseInt(callIndex_local));
+        setCallIndex(parseInt(callIndex_local));
+      }
+      if(callTimeInSeconds_local){
+        console.log(parseInt(callTimeInSeconds_local));
+        setCallTimeInSeconds(parseInt(callTimeInSeconds_local));
+      }
+      if(selectedCartelas_local){
+        console.log(JSON.parse(selectedCartelas_local));
+        setSelectedCartelas(JSON.parse(selectedCartelas_local));
+      }
+      if(checkedCartelas_local){
+        console.log(JSON.parse(checkedCartelas_local));
+        setCheckedCartelas(JSON.parse(checkedCartelas_local));
+      }
+      
+      
     }
     return (
       <div className="bingo-main-page">
@@ -364,6 +470,17 @@ const BingoGameComponent = () => {
                 }}
                 options={[{value:'Slow', label: SegmentedItem('Slow')}, {value: 'Normal', label: SegmentedItem('Normal')}, {value: 'Fast', label: SegmentedItem('Fast')}]}
               />
+            </div>
+            <div>
+              <Popconfirm
+                title="የቀድሞ ጌም"
+                // description="የቀድሞውን ጌም ላጫውት?"
+                onConfirm={getLastGame}
+                onOpenChange={() => console.log('open change')}
+                
+              >
+                <Button type="primary">የቀድሞ ጌም</Button>
+              </Popconfirm>
             </div>
           </div>
         </Modal>
