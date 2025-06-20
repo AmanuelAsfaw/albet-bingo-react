@@ -117,7 +117,7 @@ const BingoGameComponent = () => {
       const countChecks = localStorage.getItem("countHowmanyChecks");
 
       setLanguage(lang? lang:'amharic-default')
-      setAutomatic(auto == 'automatic'? true:false)
+      setAutomatic(auto == 'manual'? false:true)
       setCallTimeInSeconds(callTime? parseInt(callTime):8)
       setCountHowmanyChecks(countChecks? countChecks:'1')
     }
