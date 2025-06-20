@@ -20,6 +20,9 @@ import { fetchAllCartela } from "../../../../redux/Cartelas/TodayBill.action";
 import axios from "axios";
 import { MainUrl } from "../../../../constants/Url";
 
+import WinnerAudio from "../../../../audios/cartelaWinner/IsWinnerMale.mp3";
+import NotWinnerAudio from "../../../../audios/cartelaWinner/NotWinnerMale.mp3";
+
 const CartelaComponent: FC<CartelaPropType> = ({
     showNavBar,fetchCartelas, checkedCartelas,cartelas, drawNumbers, callIndex, currentCartela, setCurrentCartela, selectedCartelas,bingoGame, setCheckedCartelas,
     countHowmanyChecks, 
@@ -243,6 +246,19 @@ const CartelaComponent: FC<CartelaPropType> = ({
       setCheckedCartelas(cpy_checked_cartelas)
       setCurrentCartela(null)
     }
+    useEffect(()=>{
+      if (currentCartela?.cartela_number){
+        if(checkCurrentCartelaMultipleWin()){
+          console.log('is Winner');
+          var audio_ = new Audio(WinnerAudio)
+          audio_.play()
+        } else {
+          console.log('Not is Winner');
+          var audio_ = new Audio(NotWinnerAudio)
+          audio_.play()
+        }
+      }
+    },[currentCartela?.cartela_number])
     return (
         <div className="bingo-cartela-main-page" style={showNavBar? {width: '85vw'}:{ width: '100vw'}}>
             <div className="bingo-sales-title">Cartela <Switch defaultChecked={allCartela} onChange={onChange} /></div>

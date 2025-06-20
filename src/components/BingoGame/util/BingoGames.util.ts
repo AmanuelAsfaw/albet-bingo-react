@@ -11,6 +11,8 @@ import { Cartela } from "../../../redux/Cartelas/TodayBill.type";
 
 
 import { Cartela as CartelaType } from "../../../redux/Cartelas/TodayBill.type";
+import { getCachedAudio } from "../../../audioCache";
+import { getAudioFileByName } from "../../../utils/AudioDatabase";
 
 export const max_selectedNumbers = 6;
 export const numbers_list = [
@@ -41,6 +43,7 @@ export const numberWithOdd: {
 
 export type DashboardPropType = {
   setCashier: Function;
+  setCurrentCartela? : Function;
 }
 
 export type CartelaPropType = {
@@ -108,6 +111,7 @@ export type BingoPlayPropType = {
   setCashier: Function;
   setAudioCallStr: Function;
   setCountHowmanyChecks: Function;
+  audio_shuffle_balls_ref: any;
 };
 
 export type LoadingScreenPropType = {
@@ -219,6 +223,96 @@ export type KenoGame = {
   game_number: number;
   draw_numbers: number[];
 };
+if ('caches' in window) {
+  // Safe to use caches
+  console.warn("Cache API is supported in this browser.");
+} else {
+  console.warn("Cache API not supported in this browser.");
+}
+export const PlayAudioEfficiently = async (
+  audio: HTMLAudioElement | null,
+  drawNumbers: number[],
+  callIndex: number,
+  audioUrl: string,
+  onFailAudio?: HTMLAudioElement | null,
+) => {
+  const num = drawNumbers[callIndex];
+  const path = `/src/audios/amharic/${num}.mp3`;
+  console.log(`Audio data response for ${path}:`, audio );
+  getAudioFileByName(audioUrl, audioUrl).then((audioData) => {
+    console.log(`Audio local-data for ${path}:`, audioData );
+    if (audio){
+      audio.src = URL.createObjectURL(audioData);
+      audio.currentTime = 0;
+      audio?.play().catch((err) => {
+        console.warn("Failed to play audio: ", err);
+        if (onFailAudio) {
+          onFailAudio.play().catch(() => {
+            const fallback = new Audio(`/src/audios/amharic/${num}.mp3`);
+            fallback.play();
+          });
+        } else {
+          const fallback = new Audio(`/src/audios/amharic/${num}.mp3`);
+          fallback.play();
+        }   
+      });
+    }
+  })
+
+  // getCachedAudio(audioUrl).then((blobUrl) => {
+  //     if (blobUrl && audio) {
+  //       audio.src = blobUrl;
+  //       // audio?.currentTime = 0;
+  //       audio?.play().catch((err) => {
+  //         console.warn("Failed to play audio: ", err);
+  //         if (onFailAudio) {
+  //           onFailAudio.play().catch(() => {
+  //             const fallback = new Audio(`/src/audios/amharic/${num}.mp3`);
+  //             fallback.play();
+  //           });
+  //         } else {
+  //           const fallback = new Audio(`/src/audios/amharic/${num}.mp3`);
+  //           fallback.play();
+  //         }   
+  //       });
+  //     }
+  //   });
+
+  // if (audio) {
+  //   try {
+  //     const cache = await caches.open('audio-cache-v1');
+  //     const cachedResponse = await cache.match(path);
+  //     console.log(`Cached response for ${path}:`, cachedResponse );
+      
+  //     if (cachedResponse) {
+  //       const blob = await cachedResponse.blob();
+  //       const url = URL.createObjectURL(blob);
+  //       audio.src = url;
+  //       audio.currentTime = 0;
+  //       await audio.play();
+  //       URL.revokeObjectURL(url);
+  //     } else {
+  //       console.log(`Audio not cached: ${path}`);
+        
+  //       audio.src = path;
+  //       audio.currentTime = 0;
+  //       await audio.play();
+  //     }
+  //   } catch (err) {
+  //     console.warn("Failed to play audio:", err);
+  //     if (onFailAudio) {
+  //       onFailAudio.play().catch(() => {
+  //         const fallback = new Audio(`/src/audios/amharic/${num}.mp3`);
+  //         fallback.play();
+  //       });
+  //     } else {
+  //       const fallback = new Audio(`/src/audios/amharic/${num}.mp3`);
+  //       fallback.play();
+  //     }
+  //   }
+  // }
+};
+
 export const ArrayRange = (start: number, stop: number, step: number) => Array. from( { length: (stop - start) / step + 1 }, (value, index) => start + index * step );
 
 export const Roles = [{ value: "Resident Engineer" }, { value: "RU" }];

@@ -26,6 +26,7 @@ import { FcServices } from "react-icons/fc";
 
 const DashboardComponent: FC<DashboardPropType> = ({
     setCashier,
+    setCurrentCartela,
   }) => {
     const [casher, setCasher] = useState("");
     const [wallet, setWallet] = useState("");
@@ -61,6 +62,7 @@ const DashboardComponent: FC<DashboardPropType> = ({
     }
     
     useEffect(()=>{
+        if(setCurrentCartela) setCurrentCartela(null);
         get_data()
     }, [])
     return (

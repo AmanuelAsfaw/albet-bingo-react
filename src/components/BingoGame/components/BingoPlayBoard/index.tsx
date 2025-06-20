@@ -13,7 +13,7 @@ import { FcComboChart } from "react-icons/fc";
 import { ImCart } from "react-icons/im";
 import { FaBowlingBall } from "react-icons/fa";
 import { MdOutlinePointOfSale } from "react-icons/md";
-import { ArrayRange, BingoPlayPropType } from "../../util/BingoGames.util";
+import { ArrayRange, BingoPlayPropType, PlayAudioEfficiently } from "../../util/BingoGames.util";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 import { MdPlayCircle } from "react-icons/md";
 import { FaPauseCircle, FaPlayCircle } from "react-icons/fa";
@@ -50,13 +50,62 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
     setShowModal,
     setSelectedCartelas,
     setStake,setCalledDrawNumbers,setCheckedCartelas,setCashier, setAudioCallStr, setCountHowmanyChecks,
+    audio_shuffle_balls_ref,
   }) => {
     const [isLowDeposit, setIsLowDeposit] = useState(false);
     const [lowDeposit, setLowDeposit] = useState('');
 
-    const shuffle = () => {
+    const shuffle = async() => {
+      let shuffle_list = [...shuffleNumbers];
+      let isShuffling = true;
+    
+      // Create Audio
+      const playShuffleAudioFun = async() => {
+        // Call again after ~500ms (adjustable for speed of shuffle)
+        // setTimeout(addRandomNumber, 500);
+
+        var audio_:any = audio_shuffle_balls_ref?.current
+        audio_.play()
+
+        // Set timeout to stop everything after 4 seconds
+        const interval_ = await setTimeout(() => {
+          audio_.pause();         // Stop audio
+          // isShuffling = false;    // Disable further actions
+          console.log("Shuffle stopped after 4 seconds");
+        }, 4000);
+        return () => clearTimeout(interval_);
+      }
+      await playShuffleAudioFun()
+          
+      // Loop to keep adding random numbers while shuffling
+      const addRandomNumber = async () => {
+        console.log('set time out ======= start',shuffleNumbers.length);
+    
+        const element = Math.floor(Math.random() * 75) + 1;
+        shuffle_list.push(element);
+        
+        setShuffleNumbers([...shuffle_list]); // Trigger re-render
+        if (!isShuffling || shuffle_list.length > 5) {
+          return;
+        }
+    
+        // Call again after ~10ms (adjustable for speed of shuffle)
+        await setTimeout(addRandomNumber, 10);
+        console.log('set time out =======end');
+        
+      };
+    
+      // Start adding numbers
+      await addRandomNumber();
+      setShuffleNumbers([])
+      console.log('end of shuffle', shuffleNumbers);
+    
+    };
+
+    const shuffle_ = async() => {
       let shuffle_list = [...shuffleNumbers]
       const element = Math.floor(Math.random() * 75) + 1;
+      
       const timeOut = setTimeout(() => {
         shuffle_list.push(element)
         setShuffleNumbers(shuffle_list)
@@ -66,7 +115,11 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
 
     useEffect(() => {
       if(shuffleNumbers.length < 75 && shuffleNumbers.length > 0){
-        shuffle()
+        if (shuffleNumbers.length > 15){
+          setShuffleNumbers([])
+        } else{
+          shuffle_()
+        }
       }
       else if(shuffleNumbers.length == 75){
         setShuffleNumbers([])
@@ -85,8 +138,8 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
         }
 
         if(callIndex == 0){
-          function StartPlayAudio() {
-            const interval_ = setTimeout(() => {
+          async function StartPlayAudio() {
+            const interval_ = setTimeout(async () => {
               // var audio_ = new Audio("../../../../../src/audios/"+elmnt+".mp3")
               // console.log(audio_);
               // audio_.play()
@@ -95,11 +148,12 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
               
               if (audio){
                 try {
-                  audio.play()
+                  var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
+                  await PlayAudioEfficiently(audio, drawNumbers, callIndex, "/src/audios/amharic/game-start.mp3", audio_)
                 } catch (error) {
                   console.log(error);
-                  
-                  var audio_ = new Audio("../../../../../src/audios/game-start.mp3")
+
+                  var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
                   audio_.play()
                 }
               }
@@ -123,7 +177,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
         // synth.speak(utterThis)
         
         function latterPlayAudio() {
-          const interval_ = setTimeout(() => {
+          const interval_ = setTimeout(async () => {
             // var audio_ = new Audio("../../../../../src/audios/"+elmnt+".mp3")
             // console.log(audio_);
             // audio_.play()
@@ -132,11 +186,12 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
             
             if (audio){
               try {
-                audio.play()
+                var audio_ = new Audio("../../../../../src/audios/amharic/"+ourLatter+".mp3")
+                await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/amharic/${ourLatter}.mp3`, audio_)
               } catch (error) {
                 console.log(error);
                 
-                var audio_ = new Audio("../../../../../src/audios/amharic/"+ourLatter+"-speech.mp3")
+                var audio_ = new Audio("../../../../../src/audios/amharic/"+ourLatter+".mp3")
                 audio_.play()
               }
             }
@@ -169,14 +224,15 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
           console.log(audio?.current);
           // audio?.current.play();
           
-          const interval = setTimeout(() => {
+          const interval = setTimeout(async () => {
             
             // var audio_ = new Audio("../../../../../src/audios/"+elmnt+".mp3")
             // audio_.play()
             var audio:any = audio_refs[drawNumbers[callIndex]-1]?.current
             if (audio){
               try {
-                audio.play()
+                var audio_ = new Audio("../../../../../src/audios/amharic/"+elmnt+".mp3")
+                await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/amharic/${elmnt}.mp3`, audio_)
               } catch (error) {
                 console.log(error);
                 
@@ -209,7 +265,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
         let ourLatter = elmnt< 16?'B': elmnt<31? 'I': elmnt<46?'N':elmnt<61?'G': 'O'
         
         function latterPlayAudio() {
-          const interval_ = setTimeout(() => {
+          const interval_ = setTimeout(async () => {
             // var audio_ = new Audio("../../../../../src/audios/"+elmnt+".mp3")
             // console.log(audio_);
             // audio_.play()
@@ -218,11 +274,12 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
             
             if (audio){
               try {
-                audio.play()
+                var audio_ = new Audio("../../../../../src/audios/amharic/"+ourLatter+".mp3")
+                await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/amharic/${ourLatter}.mp3`, audio_)
               } catch (error) {
                 console.log(error);
                 
-                var audio_ = new Audio("../../../../../src/audios/amharic/"+ourLatter+"-speech.mp3")
+                var audio_ = new Audio("../../../../../src/audios/amharic/"+ourLatter+".mp3")
                 audio_.play()
               }
             }
@@ -254,7 +311,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
         console.log('setTimeout');
         
         function playAudio() {
-          const interval_ = setTimeout(() => {
+          const interval_ = setTimeout(async () => {
             // var audio_ = new Audio("../../../../../src/audios/"+elmnt+".mp3")
             // console.log(audio_);
             // audio_.play()
@@ -262,7 +319,8 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
             
             if (audio){
               try {
-                audio.play()
+                var audio_ = new Audio("../../../../../src/audios/amharic/"+elmnt+".mp3")
+                await PlayAudioEfficiently(audio, drawNumbers, callIndex,`/src/audios/amharic/${elmnt}.mp3` , audio_)
               } catch (error) {
                 console.log(error);
                 
@@ -278,7 +336,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
         const interval = setTimeout(() => {
           if(callIndex == 74){
             
-            function FinishedPlayAudio() {
+            async function FinishedPlayAudio() {
               console.log('StartPlayAudio');
               if(automatic && playGame){
                 setAudioCallStr('start')
@@ -287,7 +345,8 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
               
               if (audio){
                 try {
-                  audio.play()
+                  var audio_ = new Audio("../../../../../src/audios/game-finished.mp3")
+                  await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/game-finished.mp3`, audio_)
                 } catch (error) {
                   console.log(error);
                   var audio_ = new Audio("../../../../../src/audios/game-finished.mp3")
@@ -324,16 +383,17 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
           if(audioCallStr !== 'start'){
             setAudioCallStr('start')
             
-            function StartPlayAudio() {
+            async function StartPlayAudio() {
               console.log('StartPlayAudio');
               var audio:any = audio_refs[80]?.current
               
               if (audio){
                 try {
-                  audio.play()
+                  var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
+                  await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/amharic/game-start.mp3`, audio_)
                 } catch (error) {
                   console.log(error);
-                  var audio_ = new Audio("../../../../../src/audios/game-start.mp3")
+                  var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
                   audio_.play()
                 }
               }
@@ -345,16 +405,17 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
           if(audioCallStr !== 'pause'){
             setAudioCallStr('pause')
             
-            function PausePlayAudio() {
+            async function PausePlayAudio() {
               console.log('pausePlayAudio');
               var audio:any = audio_refs[82]?.current
               
               if (audio){
                 try {
-                  audio.play()
+                  var audio_ = new Audio("../../../../../src/audios/amharic/game-pause.mp3")
+                  await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/amharic/game-pause.mp3`, audio_)
                 } catch (error) {
                   console.log(error);
-                  var audio_ = new Audio("../../../../../src/audios/game-pause.mp3")
+                  var audio_ = new Audio("../../../../../src/audios/amharic/game-pause.mp3")
                   audio_.play()
                 }
               }
@@ -396,7 +457,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
       }
     }, [bingoGame])
 
-    const startNewGame = () => {
+    const startNewGame = async() => {
       console.log('startNewGame');     
       setDrawNumbers([])   
       setBingoGame(null)
@@ -414,11 +475,12 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
         cartelas: selectedCartelas.join(','),
         stake: stake,
       })
-      .then((response) => {
+      .then(async(response) => {
           console.log(response.data)
           if(response.data && response.data.status === 200){
-            
-            function StartPlayAudio() {
+
+            await shuffle()
+            async function StartPlayAudio() {
               console.log('StartPlayAudio');
               if(automatic && playGame){
                 setAudioCallStr('start')
@@ -427,17 +489,18 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
               
               if (audio){
                 try {
-                  audio.play()
+                  var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
+                  await PlayAudioEfficiently(audio, drawNumbers, callIndex, "/src/audios/amharic/game-start.mp3", audio_)
                 } catch (error) {
                   console.log(error);
-                  var audio_ = new Audio("../../../../../src/audios/game-start.mp3")
+                  var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
                   audio_.play()
                 }
               }
             }
-            StartPlayAudio()
+            await StartPlayAudio()
   
-            const interval_ = setTimeout(() => {
+            const interval_ = await setTimeout(() => {
               setBingoGame(response.data.current_game)
               setDrawNumbers(
                 response.data.current_game.draw_numbers.split(',').map((item:string) => parseInt(item))
@@ -536,7 +599,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
                 ArrayRange(1,75,1).filter((a) => a < 16).map((e: any) => {
                   if (drawNumbers.slice(0, callIndexNew()).includes(e) && callIndexNew() > -1)
                     return <div className="bingo-board-nums-item-white-color">{e}</div>
-                  return <div className={ shuffleNumbers.includes(e) || (callIndexNew() > -1 && drawNumbers[callIndexNew()] == e)?"bingo-board-nums-item blink_me":"bingo-board-nums-item"}>{e}</div>
+                  return <div className={ (shuffleNumbers.includes(e) && callIndexNew() < 1) || (callIndexNew() > -1 && drawNumbers[callIndexNew()] == e)?"bingo-board-nums-item blink_me":"bingo-board-nums-item"}>{e}</div>
                 })
               }
               </>
@@ -546,7 +609,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
                 ArrayRange(1,75,1).filter((a) => a < 31 && a > 15).map((e: any) => {
                   if (drawNumbers.slice(0,callIndexNew()).includes(e) && callIndexNew() > -1)
                     return <div className="bingo-board-nums-item-white-color">{e}</div>
-                  return <div className={ shuffleNumbers.includes(e) || (callIndexNew() > -1 && drawNumbers[callIndexNew()] == e)?"bingo-board-nums-item blink_me":"bingo-board-nums-item"}>{e}</div>
+                  return <div className={ (shuffleNumbers.includes(e) && callIndexNew() < 1) || (callIndexNew() > -1 && drawNumbers[callIndexNew()] == e)?"bingo-board-nums-item blink_me":"bingo-board-nums-item"}>{e}</div>
                 })
               }
               </>
@@ -556,7 +619,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
                 ArrayRange(1,75,1).filter((a) => a < 46 && a > 30).map((e: any) => {
                   if (drawNumbers.slice(0,callIndexNew()).includes(e) && callIndexNew() > -1)
                     return <div className="bingo-board-nums-item-white-color">{e}</div>
-                  return <div className={ shuffleNumbers.includes(e) || (callIndexNew() > -1 && drawNumbers[callIndexNew()] == e)?"bingo-board-nums-item blink_me":"bingo-board-nums-item"}>{e}</div>
+                  return <div className={ (shuffleNumbers.includes(e) && callIndexNew() < 1) || (callIndexNew() > -1 && drawNumbers[callIndexNew()] == e)?"bingo-board-nums-item blink_me":"bingo-board-nums-item"}>{e}</div>
                 })
               }
               </>
@@ -566,7 +629,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
                 ArrayRange(1,75,1).filter((a) => a < 61 && a > 45).map((e: number) => {
                   if (drawNumbers.slice(0,callIndexNew()).includes(e) && callIndexNew() > -1)
                     return <div className="bingo-board-nums-item-white-color">{e}</div>
-                  return <div className={ shuffleNumbers.includes(e) || (callIndexNew() > -1 && drawNumbers[callIndexNew()] == e)?"bingo-board-nums-item blink_me":"bingo-board-nums-item"}>{e}</div>
+                  return <div className={ (shuffleNumbers.includes(e) && callIndexNew() < 1) || (callIndexNew() > -1 && drawNumbers[callIndexNew()] == e)?"bingo-board-nums-item blink_me":"bingo-board-nums-item"}>{e}</div>
                 })
               }
               </>
@@ -576,7 +639,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
                 ArrayRange(1,75,1).filter((a) => a < 76 && a > 60).map((e: any) => {
                   if (drawNumbers.slice(0,callIndexNew()).includes(e) && callIndexNew() > -1)
                     return <div className="bingo-board-nums-item-white-color">{e}</div>
-                  return <div className={ shuffleNumbers.includes(e) || (callIndexNew() > -1 && drawNumbers[callIndexNew()] == e)?"bingo-board-nums-item blink_me":"bingo-board-nums-item"}>{e}</div>
+                  return <div className={ (shuffleNumbers.includes(e) && callIndexNew() < 1) || (callIndexNew() > -1 && drawNumbers[callIndexNew()] == e)?"bingo-board-nums-item blink_me":"bingo-board-nums-item"}>{e}</div>
                 })
               }
               </>

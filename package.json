@@ -11,6 +11,7 @@
     "axios": "^0.21.4",
     "bootstrap": "^4.6.0",
     "boxicons": "^2.1.4",
+    "idb": "^8.0.3",
     "lodash": "^4.17.20",
     "mathjs": "^10.0.0",
     "moment": "^2.29.4",
@@ -37,6 +38,7 @@
     "use-scan-detection": "^0.2.3",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.0",
+    "workbox-window": "^7.3.0",
     "xlsx": "^0.17.5"
   },
   "scripts": {

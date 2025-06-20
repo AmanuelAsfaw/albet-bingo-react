@@ -60,13 +60,21 @@ import './bingo.css';
 import Logo from "./ethbingo.png";
 import { Cartela as CartelaType } from "../../redux/Cartelas/TodayBill.type";
 import { RouteConstants } from "../../router/Constants";
+import { cacheAudioFiles, getAudioUrls } from "./components/BingoPlayBoard/components/audioCatch";
+import { cacheAudioFile } from "../../audioCache";
+import { saveAudioFile } from "../../utils/AudioDatabase";
+// import { useAudioCache } from "./components/BingoPlayBoard/components/useAudioCache";
 
 const BingoGameComponent = () => {
     
     const audio_refs = ArrayRange(1,83,1).map((e)=>useRef(null))
+    const audio_shuffle_balls_ref = useRef(null);
     const game_start_ref = useRef()
     const game_finnished_ref = useRef()
     const game_pause_ref = useRef()
+    
+    // const { cachedAudios } = useAudioCache(audioPaths);
+
     const [playGame, setPlayGame] = useState(true);
     const [showNavBar, setShowNavBar] = useState(false);
     const [navItem, setNavItem] = useState('bingo-play');
@@ -91,7 +99,7 @@ const BingoGameComponent = () => {
     const [showModal, setShowModal] = useState<any>(false);
     const [language, setLanguage] = useState('amharic-default');
     const [cashier, setCashier] = useState<any>(null);
-    const [callTimeInSeconds, setCallTimeInSeconds] = useState(8);
+    const [callTimeInSeconds, setCallTimeInSeconds] = useState(9);
     const [showSettingsModal, setSettingsShowModal] = useState<any>(false);
     const [selectedCartelas, setSelectedCartelas] = useState<Number[]>([]);
     const [checkedCartelas, setCheckedCartelas] = useState<Number[]>([]);
@@ -184,6 +192,34 @@ const BingoGameComponent = () => {
       }
     }, [checkedCartelas])
     
+    useEffect(() => {
+      if (audio_refs.length > 0) {
+        audio_refs.forEach((ref: any) => {
+          const audio = ref?.current;
+          if (audio && audio.readyState < 4) {
+            audio.load();
+          }
+        });
+      }
+    }, [audio_refs]);
+
+    const preloadAudios = async(urls: string[]) => {
+      urls.forEach(async (url) => {
+        // await cacheAudioFile(url);
+        await saveAudioFile(url, url);
+        // const audio = new Audio(url);
+        // audio.preload = 'auto';
+        // audio.load();
+      });
+    };
+    useEffect(() => {
+      const urls = getAudioUrls(language);
+
+      // Optionally cache them
+      // cacheAudioFiles(urls); // From earlier example
+      preloadAudios(urls);
+    }, [language]);
+
     const SegmentedItem = (item:string) => {
       const is_active = item == 'Fast' && callTimeInSeconds < 3? true:
         item == 'Normal' && callTimeInSeconds < 8? true:
@@ -254,11 +290,11 @@ const BingoGameComponent = () => {
           
           <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px',}}><img src={Logo} style={{width: '100px'}}/></div>
           <div className="bingo-nav-items">
-            <div className={navItem == 'dashboard'?"bingo-nav-item-active":"bingo-nav-item"} onClick={()=> setNavItem('dashboard')}><FcComboChart/> Dashboard</div>
-            <div className={navItem == 'sales'?"bingo-nav-item-active":"bingo-nav-item"} onClick={()=> setNavItem('sales')}><ImCart /> Sales</div>
-            { is_admin && <div className={navItem == 'report'?"bingo-nav-item-active":"bingo-nav-item"} onClick={()=> setNavItem('report')}><ImCart /> Report</div>}
-            <div className={navItem == 'bingo-play'?"bingo-nav-item-active":"bingo-nav-item"} onClick={()=> setNavItem('bingo-play')}><FaBowlingBall /> BingoPlay</div>
-            <div className={navItem == 'cartela'?"bingo-nav-item-active":"bingo-nav-item"} onClick={()=> setNavItem('cartela')}><MdOutlinePointOfSale /> Cartel</div>
+            <div className={navItem == 'dashboard'?"bingo-nav-item-active":"bingo-nav-item"} onClick={()=> {setNavItem('dashboard'); setCurrentCartela(null)}}><FcComboChart/> Dashboard</div>
+            <div className={navItem == 'sales'?"bingo-nav-item-active":"bingo-nav-item"} onClick={()=> {setNavItem('sales'); setCurrentCartela(null)}}><ImCart /> Sales</div>
+            { is_admin && <div className={navItem == 'report'?"bingo-nav-item-active":"bingo-nav-item"} onClick={()=> {setNavItem('report'); setCurrentCartela(null)}}><ImCart /> Report</div>}
+            <div className={navItem == 'bingo-play'?"bingo-nav-item-active":"bingo-nav-item"} onClick={()=> {setNavItem('bingo-play'); setCurrentCartela(null)}}><FaBowlingBall /> BingoPlay</div>
+            <div className={navItem == 'cartela'?"bingo-nav-item-active":"bingo-nav-item"} onClick={()=> {setNavItem('cartela'); setCurrentCartela(null)}}><MdOutlinePointOfSale /> Cartel</div>
             <div className="bingo-nav-item-active" style={{marginTop: "300px", boxShadow: '2px 2px 7px 2px gray', cursor: 'pointer'}} 
                     onClick={() => {
                       logout();
@@ -277,7 +313,7 @@ const BingoGameComponent = () => {
           </div>
 
           {
-          navItem == 'bingo-play'?(<BingoPlayBoardComponent language={language} countHowmanyChecks={countHowmanyChecks} setCountHowmanyChecks={setCountHowmanyChecks} audioCallStr={audioCallStr} setAudioCallStr={setAudioCallStr} callTimeInSeconds={callTimeInSeconds} cashier={cashier} setCashier={setCashier} audio_refs={audio_refs} setCheckedCartelas={setCheckedCartelas} calledNumbers={calledNumbers} setCalledDrawNumbers={setCalledDrawNumbers} boardNumberList={boardNumberList} showNavBar={showNavBar} playGame={playGame} setPlayGame={setPlayGame} previousCalls={previousCalls} shuffleNumbers={shuffleNumbers} drawNumbers={drawNumbers} bingoGame={bingoGame} automatic={automatic} callIndex={callIndex} showModal={showModal} selectedCartelas={selectedCartelas} stake={stake} setPreviousCalls={setPreviousCalls} setShuffleNumbers={setShuffleNumbers} setDrawNumbers={setDrawNumbers} setBingoGame={setBingoGame} setAutomatic={setAutomatic} setCallIndex={setCallIndex} setShowModal={setShowModal} setSelectedCartelas={setSelectedCartelas} setStake={setStake}></BingoPlayBoardComponent>):
+          navItem == 'bingo-play'?(<BingoPlayBoardComponent language={language} countHowmanyChecks={countHowmanyChecks} setCountHowmanyChecks={setCountHowmanyChecks} audioCallStr={audioCallStr} setAudioCallStr={setAudioCallStr} callTimeInSeconds={callTimeInSeconds} cashier={cashier} setCashier={setCashier} audio_refs={audio_refs} setCheckedCartelas={setCheckedCartelas} calledNumbers={calledNumbers} setCalledDrawNumbers={setCalledDrawNumbers} boardNumberList={boardNumberList} showNavBar={showNavBar} playGame={playGame} setPlayGame={setPlayGame} previousCalls={previousCalls} shuffleNumbers={shuffleNumbers} drawNumbers={drawNumbers} bingoGame={bingoGame} automatic={automatic} callIndex={callIndex} showModal={showModal} selectedCartelas={selectedCartelas} stake={stake} setPreviousCalls={setPreviousCalls} setShuffleNumbers={setShuffleNumbers} setDrawNumbers={setDrawNumbers} setBingoGame={setBingoGame} setAutomatic={setAutomatic} setCallIndex={setCallIndex} setShowModal={setShowModal} setSelectedCartelas={setSelectedCartelas} setStake={setStake} audio_shuffle_balls_ref={audio_shuffle_balls_ref}></BingoPlayBoardComponent>):
           navItem == 'sales'?<Sales showNavBar={showNavBar}></Sales>:
           navItem == 'report'?<Report showNavBar={showNavBar}></Report>:
           navItem == 'cartela'?<Cartela countHowmanyChecks={countHowmanyChecks} setCheckedCartelas={setCheckedCartelas} checkedCartelas={checkedCartelas} bingoGame={bingoGame} selectedCartelas={selectedCartelas} currentCartela={currentCartela ? currentCartela : null} setCurrentCartela={setCurrentCartela} drawNumbers={drawNumbers.slice(0, callIndex >=0?callIndex+2:callIndex+1)} callIndex={callIndex >=0?callIndex+1:callIndex} showNavBar={showNavBar}></Cartela>: 
@@ -289,128 +325,129 @@ const BingoGameComponent = () => {
             {
                language == 'amharic-default' && audio_refs.map((e, index)=>{
                 if(index == 75){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/B.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/B.mp3"}></audio>
                 }
                 else if(index == 76){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/I.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/I.mp3"}></audio>
                 }
                 else if(index == 77){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/N.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/N.mp3"}></audio>
                 }
                 else if(index == 78){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/G.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/G.mp3"}></audio>
                 }
                 else if(index == 79){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/O.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/O.mp3"}></audio>
                 }
                 else if(index == 80){
-                  // return <audio ref={e} src={"../../../../src/audios/amharic/game-start.mp3"}></audio>
-                  return <audio ref={e} src={"../../../../src/audios/amharic/game-start.mp3"}></audio>
+                  // return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-start.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-start.mp3"}></audio>
                 }
                 else if(index == 81){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/game-finished.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-finished.mp3"}></audio>
                 }
                 else if(index == 82){
-                  // return <audio ref={e} src={"../../../../src/audios/amharic/game-pause.mp3"}></audio>
-                  return <audio ref={e} src={"../../../../src/audios/amharic/game-pause.mp3"}></audio>
+                  // return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-pause.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-pause.mp3"}></audio>
                 }
-                return <audio ref={e} src={"../../../../src/audios/amharic/"+(index+1)+".mp3"}></audio>
+                return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/"+(index+1)+".mp3"}></audio>
               })
             }
             
             {
                language == 'amharic' && audio_refs.map((e, index)=>{
                 if(index == 75){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/B.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/B.mp3"}></audio>
                 }
                 else if(index == 76){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/I.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/I.mp3"}></audio>
                 }
                 else if(index == 77){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/N.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/N.mp3"}></audio>
                 }
                 else if(index == 78){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/G.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/G.mp3"}></audio>
                 }
                 else if(index == 79){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/O.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/O.mp3"}></audio>
                 }
                 else if(index == 80){
-                  // return <audio ref={e} src={"../../../../src/audios/amharic/game-start.mp3"}></audio>
-                  return <audio ref={e} src={"../../../../src/audios/BINGO-EN/bingo.mp3"}></audio>
+                  // return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-start.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/BINGO-EN/bingo.mp3"}></audio>
                 }
                 else if(index == 81){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/game-finished.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-finished.mp3"}></audio>
                 }
                 else if(index == 82){
-                  // return <audio ref={e} src={"../../../../src/audios/amharic/game-pause.mp3"}></audio>
-                  return <audio ref={e} src={"../../../../src/audios/BINGO-EN/stop.mp3"}></audio>
+                  // return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-pause.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/BINGO-EN/stop.mp3"}></audio>
                 }
                 else if(index < 15){
-                  return <audio ref={e} src={"../../../../src/audios/BINGO-EN/B"+(index+1)+".mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/BINGO-EN/B"+(index+1)+".mp3"}></audio>
                 }
                 else if(index < 30){
-                  return <audio ref={e} src={"../../../../src/audios/BINGO-EN/I"+(index+1)+".mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/BINGO-EN/I"+(index+1)+".mp3"}></audio>
                 }
                 else if(index < 45){
-                  return <audio ref={e} src={"../../../../src/audios/BINGO-EN/N"+(index+1)+".mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/BINGO-EN/N"+(index+1)+".mp3"}></audio>
                 }
                 else if(index < 60){
-                  return <audio ref={e} src={"../../../../src/audios/BINGO-EN/G"+(index+1)+".mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/BINGO-EN/G"+(index+1)+".mp3"}></audio>
                 }
                 else if(index < 75){
-                  return <audio ref={e} src={"../../../../src/audios/BINGO-EN/O"+(index+1)+".mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/BINGO-EN/O"+(index+1)+".mp3"}></audio>
                 }
-                return <audio ref={e} src={"../../../../src/audios/amharic/"+(index+1)+".mp3"}></audio>
+                return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/"+(index+1)+".mp3"}></audio>
               })
             }
             
             {
                language == 'amharic-female' && audio_refs.map((e, index)=>{
                 if(index == 75){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/B.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/B.mp3"}></audio>
                 }
                 else if(index == 76){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/I.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/I.mp3"}></audio>
                 }
                 else if(index == 77){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/N.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/N.mp3"}></audio>
                 }
                 else if(index == 78){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/G.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/G.mp3"}></audio>
                 }
                 else if(index == 79){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/O.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/O.mp3"}></audio>
                 }
                 else if(index == 80){
-                  // return <audio ref={e} src={"../../../../src/audios/amharic/game-start.mp3"}></audio>
-                  return <audio ref={e} src={"../../../../src/audios/bingo-female/bingo.mp3"}></audio>
+                  // return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-start.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/bingo-female/bingo.mp3"}></audio>
                 }
                 else if(index == 81){
-                  return <audio ref={e} src={"../../../../src/audios/amharic/game-finished.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-finished.mp3"}></audio>
                 }
                 else if(index == 82){
-                  // return <audio ref={e} src={"../../../../src/audios/amharic/game-pause.mp3"}></audio>
-                  return <audio ref={e} src={"../../../../src/audios/bingo-female/stop.mp3"}></audio>
+                  // return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/game-pause.mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/bingo-female/stop.mp3"}></audio>
                 }
                 else if(index < 15){
-                  return <audio ref={e} src={"../../../../src/audios/bingo-female/B"+(index+1)+".mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/bingo-female/B"+(index+1)+".mp3"}></audio>
                 }
                 else if(index < 30){
-                  return <audio ref={e} src={"../../../../src/audios/bingo-female/I"+(index+1)+".mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/bingo-female/I"+(index+1)+".mp3"}></audio>
                 }
                 else if(index < 45){
-                  return <audio ref={e} src={"../../../../src/audios/bingo-female/N"+(index+1)+".mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/bingo-female/N"+(index+1)+".mp3"}></audio>
                 }
                 else if(index < 60){
-                  return <audio ref={e} src={"../../../../src/audios/bingo-female/G"+(index+1)+".mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/bingo-female/G"+(index+1)+".mp3"}></audio>
                 }
                 else if(index < 75){
-                  return <audio ref={e} src={"../../../../src/audios/bingo-female/O"+(index+1)+".mp3"}></audio>
+                  return <audio ref={e} preload="auto" src={"../../../../src/audios/bingo-female/O"+(index+1)+".mp3"}></audio>
                 }
-                return <audio ref={e} src={"../../../../src/audios/amharic/"+(index+1)+".mp3"}></audio>
+                return <audio ref={e} preload="auto" src={"../../../../src/audios/amharic/"+(index+1)+".mp3"}></audio>
               })
             }
+            <audio ref={audio_shuffle_balls_ref} src={"../../../../src/audios/shuffleBalls/017578485-plastic-fast-flapping-mechanis.m4a"}></audio>
         </div>
         <Modal width={800} title={<div style={{textAlign: 'center'}}>Settings</div>} 
         visible={showSettingsModal} onCancel={()=> setSettingsShowModal(false)}
