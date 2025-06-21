@@ -1,6 +1,7 @@
 // src/utils/AudioDatabase.ts
 import { useState } from 'react';
 import { Audio } from '../types/audio';
+import { resolve } from 'mathjs';
 
 export class AudioDatabase {
   private db: IDBDatabase | null = null;
@@ -61,6 +62,92 @@ export class AudioDatabase {
           };
         });
       });
+  }
+
+  updateAudioById(id: number, audio: Audio) : Promise<void> {
+    return this.ensureDatabaseInitialized()
+        .then(db => {
+            const transaction = db.transaction(['audios', 'readwrite']);
+            const store = transaction.objectStore('audios');
+            const request = store.put({...audio, id});
+            return new Promise<void>((resolve, reject) => {
+                request.onsuccess = () => {
+                    resolve();
+                }
+                request.onerror = (event) => {
+                    reject((event.target as IDBRequest).error);
+                }                
+            })
+        })
+
+  }
+
+  updateAudioByName(name: string, audio: Audio): Promise<void> {
+    return this.ensureDatabaseInitialized()
+        .then(db => {
+            const transaction = db.transaction(['audios'], 'readwrite');
+            const store = transaction.objectStore('audios');
+            const index = store.index('name');
+            const request = index.get(name);
+            return new Promise<void>((resolve, reject) => {
+                request.onsuccess = (event) => {
+                    const existingAudio = (event.target as IDBRequest).result as Audio | undefined;
+                    if (existingAudio) {
+                        const updatedAudio = { ...existingAudio, ...audio };
+                        updatedAudio.name = name;
+                        const updateRequest = store.put(updatedAudio);
+                        updateRequest.onsuccess = () => {
+                            resolve();
+                        }
+                        updateRequest.onerror =  (event_) => {
+                            reject((event_.target as IDBRequest).error);
+                        }
+                    }
+                    else {
+                        reject(new Error(`Audio with name "${name}" not found.`))
+                    }
+                }
+            })
+        })
+  }
+  updateOrAddAudio(audio: Audio, name: string): Promise<Audio| undefined> {
+    return this.ensureDatabaseInitialized()
+        .then(db =>{
+            const transaction = db.transaction(['audios'], 'readwrite');
+            const store = transaction.objectStore('audios');
+            const index = store.index('name');
+            const request = index.get(name);
+            return new Promise<Audio>((resolve, reject) => {
+                request.onsuccess = (event) => {
+                    const existingAudio = (event.target as IDBRequest).result as Audio | undefined;
+                    if (existingAudio) {
+                        const updatedAudio = { ...existingAudio, ...audio };
+                        updatedAudio.name = name;
+                        const updateRequest = store.put(updatedAudio);
+                        updateRequest.onsuccess = () => {
+                            resolve(updatedAudio);
+                        }
+                        updateRequest.onerror =  (event_) => {
+                            reject((event_.target as IDBRequest).error);
+                        }
+                    }
+                    else {
+                        const newAudioRequest = store.add(audio);
+
+                        return new Promise<Audio>((resolve, reject) => {
+                            newAudioRequest.onsuccess = (event) => {
+                                const insertedId = (event.target as IDBRequest).result as number;
+                                resolve({id:insertedId, ...audio});
+                            };
+                            newAudioRequest.onerror = (event) => {
+                                reject((event.target as IDBRequest).error);
+                            };
+                        });
+                        
+                    }
+                }
+            })
+        })
   }
 
   getAudio(id: number): Promise<Audio | undefined> {
@@ -279,6 +366,24 @@ export const saveAudioFile = async (name: string, url: string) => {
   };
 
   await audioDb.addAudio(exampleAudio);
+  console.log(`Audio "${name}" saved.`);
+};
+
+export const updateOrSaveAudioFile = async (name: string, url: string) => {
+//   const response = await fetch(url, {
+//     headers: {
+//         'Range': '' // Clear the Range header
+//     }
+//     });
+  const blob = await fetchFullAudioContent(url);
+
+  const exampleAudio: Audio = {
+    name: `${name}`,
+    audioData: blob,
+    parsedURL: URL.createObjectURL(blob),
+  };
+
+  await audioDb.updateOrAddAudio(exampleAudio, url);
   console.log(`Audio "${name}" saved.`);
 };
 

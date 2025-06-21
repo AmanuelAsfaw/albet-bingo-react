@@ -149,7 +149,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
               if (audio){
                 try {
                   var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
-                  await PlayAudioEfficiently(audio, drawNumbers, callIndex, "/src/audios/amharic/game-start.mp3", audio_)
+                  await PlayAudioEfficiently(audio, drawNumbers, 80, "/src/audios/amharic/game-start.mp3", audio_, language)
                 } catch (error) {
                   console.log(error);
 
@@ -187,7 +187,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
             if (audio){
               try {
                 var audio_ = new Audio("../../../../../src/audios/amharic/"+ourLatter+".mp3")
-                await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/amharic/${ourLatter}.mp3`, audio_)
+                await PlayAudioEfficiently(audio, drawNumbers, new_index, `/src/audios/amharic/${ourLatter}.mp3`, audio_, language)
               } catch (error) {
                 console.log(error);
                 
@@ -232,7 +232,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
             if (audio){
               try {
                 var audio_ = new Audio("../../../../../src/audios/amharic/"+elmnt+".mp3")
-                await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/amharic/${elmnt}.mp3`, audio_)
+                await PlayAudioEfficiently(audio, drawNumbers, elmnt-1, `/src/audios/amharic/${elmnt}.mp3`, audio_, language)
               } catch (error) {
                 console.log(error);
                 
@@ -275,7 +275,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
             if (audio){
               try {
                 var audio_ = new Audio("../../../../../src/audios/amharic/"+ourLatter+".mp3")
-                await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/amharic/${ourLatter}.mp3`, audio_)
+                await PlayAudioEfficiently(audio, drawNumbers, new_index, `/src/audios/amharic/${ourLatter}.mp3`, audio_, language)
               } catch (error) {
                 console.log(error);
                 
@@ -320,7 +320,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
             if (audio){
               try {
                 var audio_ = new Audio("../../../../../src/audios/amharic/"+elmnt+".mp3")
-                await PlayAudioEfficiently(audio, drawNumbers, callIndex,`/src/audios/amharic/${elmnt}.mp3` , audio_)
+                await PlayAudioEfficiently(audio, drawNumbers, elmnt-1,`/src/audios/amharic/${elmnt}.mp3` , audio_, language)
               } catch (error) {
                 console.log(error);
                 
@@ -346,7 +346,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
               if (audio){
                 try {
                   var audio_ = new Audio("../../../../../src/audios/game-finished.mp3")
-                  await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/game-finished.mp3`, audio_)
+                  await PlayAudioEfficiently(audio, drawNumbers, 81, `/src/audios/game-finished.mp3`, audio_, language)
                 } catch (error) {
                   console.log(error);
                   var audio_ = new Audio("../../../../../src/audios/game-finished.mp3")
@@ -390,7 +390,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
               if (audio){
                 try {
                   var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
-                  await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/amharic/game-start.mp3`, audio_)
+                  await PlayAudioEfficiently(audio, drawNumbers, 80, `/src/audios/amharic/game-start.mp3`, audio_, language)
                 } catch (error) {
                   console.log(error);
                   var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
@@ -412,7 +412,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
               if (audio){
                 try {
                   var audio_ = new Audio("../../../../../src/audios/amharic/game-pause.mp3")
-                  await PlayAudioEfficiently(audio, drawNumbers, callIndex, `/src/audios/amharic/game-pause.mp3`, audio_)
+                  await PlayAudioEfficiently(audio, drawNumbers, 82, `/src/audios/amharic/game-pause.mp3`, audio_, language)
                 } catch (error) {
                   console.log(error);
                   var audio_ = new Audio("../../../../../src/audios/amharic/game-pause.mp3")
@@ -490,7 +490,7 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
               if (audio){
                 try {
                   var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
-                  await PlayAudioEfficiently(audio, drawNumbers, callIndex, "/src/audios/amharic/game-start.mp3", audio_)
+                  await PlayAudioEfficiently(audio, drawNumbers, 80, "/src/audios/amharic/game-start.mp3", audio_, language)
                 } catch (error) {
                   console.log(error);
                   var audio_ = new Audio("../../../../../src/audios/amharic/game-start.mp3")
@@ -537,6 +537,16 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
           </div>
         // </div>
       )
+    }
+    const currentCallBallLatter = () => {
+      const currentCall = drawNumbers[callIndex];
+      const currentLatter = previousCalls[0]?.latter || (currentCall < 16? 'B': 
+        currentCall < 31 ? 'I':
+        currentCall < 46 ? 'N':
+        currentCall < 61 ? 'G': 'O'
+      );
+      const currentNumber = previousCalls[0]?.number || currentCall;
+      return { currentLatter, currentNumber };
     }
     const convertToNumberLatter = (num: number) => {
       return {
@@ -686,7 +696,8 @@ const BingoPlayBoardComponent: FC<BingoPlayPropType> = ({
                   (
                     <div className="bingo-ball-display-yellow-box">
                       <div className="bingo-ball-display-box-white-circle">
-                        <div className="bingo-ball-display-box-white-box">{convertToNumberLatter(drawNumbers[callIndexNew()]).latter}<div className="bingo-display-ball-number">{drawNumbers[callIndexNew()]}</div></div>
+                        {/* <div className="bingo-ball-display-box-white-box">{convertToNumberLatter(drawNumbers[callIndexNew()]).latter}<div className="bingo-display-ball-number">{drawNumbers[callIndexNew()]}</div></div> */}
+                        <div className="bingo-ball-display-box-white-box">{currentCallBallLatter()?.currentLatter}<div className="bingo-display-ball-number">{currentCallBallLatter()?.currentNumber}</div></div>
                       </div>
                     </div>
                   )

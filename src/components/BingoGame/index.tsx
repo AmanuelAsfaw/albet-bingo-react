@@ -62,7 +62,7 @@ import { Cartela as CartelaType } from "../../redux/Cartelas/TodayBill.type";
 import { RouteConstants } from "../../router/Constants";
 import { cacheAudioFiles, getAudioUrls } from "./components/BingoPlayBoard/components/audioCatch";
 import { cacheAudioFile } from "../../audioCache";
-import { saveAudioFile } from "../../utils/AudioDatabase";
+import { saveAudioFile, updateOrSaveAudioFile } from "../../utils/AudioDatabase";
 // import { useAudioCache } from "./components/BingoPlayBoard/components/useAudioCache";
 
 const BingoGameComponent = () => {
@@ -192,21 +192,21 @@ const BingoGameComponent = () => {
       }
     }, [checkedCartelas])
     
-    useEffect(() => {
-      if (audio_refs.length > 0) {
-        audio_refs.forEach((ref: any) => {
-          const audio = ref?.current;
-          if (audio && audio.readyState < 4) {
-            audio.load();
-          }
-        });
-      }
-    }, [audio_refs]);
+    // useEffect(() => {
+    //   if (audio_refs.length > 0) {
+    //     audio_refs.forEach((ref: any) => {
+    //       const audio = ref?.current;
+    //       if (audio && audio.readyState < 4) {
+    //         audio.load();
+    //       }
+    //     });
+    //   }
+    // }, [audio_refs]);
 
     const preloadAudios = async(urls: string[]) => {
       urls.forEach(async (url) => {
         // await cacheAudioFile(url);
-        await saveAudioFile(url, url);
+        await updateOrSaveAudioFile(url, url);
         // const audio = new Audio(url);
         // audio.preload = 'auto';
         // audio.load();
@@ -388,7 +388,7 @@ const BingoGameComponent = () => {
                 else if(index < 30){
                   return <audio ref={e} preload="auto" src={"../../../../src/audios/BINGO-EN/I"+(index+1)+".mp3"}></audio>
                 }
-                else if(index < 45){
+                else if(index <= 45){
                   return <audio ref={e} preload="auto" src={"../../../../src/audios/BINGO-EN/N"+(index+1)+".mp3"}></audio>
                 }
                 else if(index < 60){

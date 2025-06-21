@@ -13,6 +13,7 @@ import { Cartela } from "../../../redux/Cartelas/TodayBill.type";
 import { Cartela as CartelaType } from "../../../redux/Cartelas/TodayBill.type";
 import { getCachedAudio } from "../../../audioCache";
 import { getAudioFileByName } from "../../../utils/AudioDatabase";
+import { getAudioUrlForLanguage } from "../components/BingoPlayBoard/components/audioCatch";
 
 export const max_selectedNumbers = 6;
 export const numbers_list = [
@@ -229,31 +230,40 @@ if ('caches' in window) {
 } else {
   console.warn("Cache API not supported in this browser.");
 }
+export const makeUrlBasedOnLanguage = (url: string, language: string) => {
+  const newUrl = language === 'amharic-default' ? '/src/audios/amharic/'+url: 
+  language === 'amharic' ? '/src/audios/BINGO-EN/'+url :
+  language === 'amharic-female'? '/src/audios/bingo-female/'+ url: '/src/audios/amharic/'+url
+  return newUrl;
+}
 export const PlayAudioEfficiently = async (
   audio: HTMLAudioElement | null,
   drawNumbers: number[],
   callIndex: number,
   audioUrl: string,
   onFailAudio?: HTMLAudioElement | null,
+  language?: string
 ) => {
   const num = drawNumbers[callIndex];
   const path = `/src/audios/amharic/${num}.mp3`;
-  console.log(`Audio data response for ${path}:`, audio );
-  getAudioFileByName(audioUrl, audioUrl).then((audioData) => {
+  const newUrl = getAudioUrlForLanguage( language || 'amharic-default', callIndex) || path;
+  console.log(`Audio data response for ${path}:`, audio, audio?.src );
+  await getAudioFileByName(newUrl, newUrl).then(async (audioData) => {
     console.log(`Audio local-data for ${path}:`, audioData );
+    
     if (audio){
       audio.src = URL.createObjectURL(audioData);
       audio.currentTime = 0;
-      audio?.play().catch((err) => {
+      await audio?.play().catch(async (err) => {
         console.warn("Failed to play audio: ", err);
         if (onFailAudio) {
-          onFailAudio.play().catch(() => {
-            const fallback = new Audio(`/src/audios/amharic/${num}.mp3`);
-            fallback.play();
+          await onFailAudio.play().catch(async () => {
+            const fallback = new Audio(newUrl);
+            await fallback.play();
           });
         } else {
-          const fallback = new Audio(`/src/audios/amharic/${num}.mp3`);
-          fallback.play();
+          const fallback = new Audio(newUrl);
+          await fallback.play();
         }   
       });
     }

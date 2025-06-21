@@ -79,4 +79,61 @@ const getAudioUrls = (language: string): string[] => {
   return urls;
 };
 
-export { cacheAudioFiles, getAudioUrls };
+const getAudioUrlForLanguage = (language: string, index: number) => {
+    const baseAmharic = (index: number) => `/src/audios/amharic/${index +1}.mp3`;
+    if (language === 'amharic-default') {
+        if (index === 75 ) return '/src/audios/amharic/B.mp3';
+        if (index === 76 ) return '/src/audios/amharic/I.mp3';
+        if (index === 77 ) return '/src/audios/amharic/N.mp3';
+        if (index === 78 ) return '/src/audios/amharic/G.mp3';
+        if (index === 79 ) return '/src/audios/amharic/O.mp3';
+        if (index === 81 ) return '/src/audios/amharic/game-finished.mp3';
+        if (index === 82 ) return '/src/audios/amharic/game-pause.mp3';
+        if (index === 81 ) return '/src/audios/amharic/game-start.mp3';
+        if (index === 83 ) return '/src/audios/amharic/undefined.mp3';
+
+        return baseAmharic(index);
+    } else if (language === 'amharic') {
+        if (index === 75 ) return '/src/audios/amharic/B.mp3';
+        if (index === 76 ) return '/src/audios/amharic/I.mp3';
+        if (index === 77 ) return '/src/audios/amharic/N.mp3';
+        if (index === 78 ) return '/src/audios/amharic/G.mp3';
+        if (index === 79 ) return '/src/audios/amharic/O.mp3';
+        if (index === 80) return '/src/audios/BINGO-EN/bingo.mp3';
+        if (index === 81) return '/src/audios/amharic/game-finished.mp3';
+        if (index === 82) return '/src/audios/BINGO-EN/stop.mp3';
+        
+        
+        const groupIndex = Math.floor(index / 15);
+        const num = index +1;
+        if (index <= 15) return `/src/audios/BINGO-EN/B${num}.mp3`;
+        if (index <= 30) return `/src/audios/BINGO-EN/I${num}.mp3`;
+        if (index <= 45) return `/src/audios/BINGO-EN/N${num}.mp3`;
+        if (index <= 60) return `/src/audios/BINGO-EN/G${num}.mp3`;
+        if (index <= 75) return `/src/audios/BINGO-EN/O${num}.mp3`;
+
+
+    } else if (language === 'amharic-female') {
+      if (index === 75) return '/src/audios/amharic/B.mp3';
+      if (index === 76) return '/src/audios/amharic/I.mp3';
+      if (index === 77) return '/src/audios/amharic/N.mp3';
+      if (index === 78) return '/src/audios/amharic/G.mp3';
+      if (index === 79) return '/src/audios/amharic/O.mp3';
+      if (index === 80) return '/src/audios/bingo-female/bingo.mp3';
+      if (index === 81) return '/src/audios/amharic/game-finished.mp3';
+      if (index === 82) return '/src/audios/bingo-female/stop.mp3';
+
+      const groupIndex = Math.floor(index / 15);
+      const num = index + 1;
+      if (index <= 15) return `/src/audios/bingo-female/B${num}.mp3`;
+      if (index <= 30) return `/src/audios/bingo-female/I${num}.mp3`;
+      if (index <= 45) return `/src/audios/bingo-female/N${num}.mp3`;
+      if (index <= 60) return `/src/audios/bingo-female/G${num}.mp3`;
+      if (index <= 75) return `/src/audios/bingo-female/O${num}.mp3`;
+
+      return baseAmharic(index);
+
+
+    }
+} 
+export { cacheAudioFiles, getAudioUrls, getAudioUrlForLanguage };
